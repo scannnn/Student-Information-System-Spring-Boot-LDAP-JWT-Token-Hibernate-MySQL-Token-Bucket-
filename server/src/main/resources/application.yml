@@ -1,0 +1,18 @@
+app:
+  jwtExpirationInMs: '360000'
+  jwtSecret: usis
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+server:
+  port: '8082'
+spring:
+  ldap:
+    embedded:
+      base-dn: dc=araproje,dc=com
+      ldif: classpath:users.ldif
+      port: 12345
+      validation:
+        enabled: false
