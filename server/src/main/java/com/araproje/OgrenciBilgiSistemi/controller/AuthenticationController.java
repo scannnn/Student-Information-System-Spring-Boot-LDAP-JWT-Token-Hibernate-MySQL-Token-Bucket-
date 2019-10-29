@@ -20,6 +20,10 @@ import com.araproje.OgrenciBilgiSistemi.payload.LoginRequest;
 import com.araproje.OgrenciBilgiSistemi.security.JwtTokenProvider;
 import com.araproje.OgrenciBilgiSistemi.util.MessageConstants;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+
 @RestController
 @RequestMapping("/api/auth")
 @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -44,8 +48,15 @@ public class AuthenticationController {
                 )
         );
 		
-		String jwt = jwtTokenProvider.generateToken(authentication);
-		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+		Claims claim = jwtTokenProvider.generateToken(authentication);
+		
+		JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
+		jwtResponse.setExpiresInMillis(claim.getExpiration().getTime());
+		jwtResponse.setAccessToken(Jwts.builder()
+										.setClaims(claim)
+										.signWith(SignatureAlgorithm.HS512, "usis")
+										.compact());
+		return ResponseEntity.ok(jwtResponse);
 	}
 	
 	@PostMapping("/validatetoken")
@@ -54,18 +65,22 @@ public class AuthenticationController {
 		String header = request.getHeader("Authorization");
 		
 		if(header == null || !header.startsWith("Bearer")) {
-			throw new RuntimeException("JWT Token is missing!");
+			return new ResponseEntity(new ApiResponse(false, MessageConstants.EMPTY_TOKEN),
+	                HttpStatus.BAD_REQUEST);
 		}
-		
-		String username = null;
-   	 	String jwt = header.substring(7);
-   	 	if(StringUtils.hasText(jwt) && jwtTokenProvider.validateToken(jwt)) {
-   	 		username = jwtTokenProvider.getUserFromJWT(jwt).getUserName();
-   	 		return new ResponseEntity(new ApiResponse(true,MessageConstants.VALID_TOKEN + username), HttpStatus.OK);
-   	 	}
-   	 	else {
-   	 		return new ResponseEntity(new ApiResponse(false, MessageConstants.INVALID_TOKEN),
-                HttpStatus.BAD_REQUEST);
-   	 	}
+		else {
+			String username = null;
+	   	 	String jwt = header.substring(7);
+		   	 if(StringUtils.hasText(jwt)) {
+		   		try {
+			   		 jwtTokenProvider.validateToken(jwt);
+			   	 }catch(Exception ex) {
+			   		return new ResponseEntity(new ApiResponse(false, ex.getMessage()),
+			                HttpStatus.BAD_REQUEST);
+			   	 }
+		   	 }
+	   	 	username = jwtTokenProvider.getUserFromJWT(jwt).getUserName();
+	 		return new ResponseEntity(new ApiResponse(true,MessageConstants.VALID_TOKEN + username), HttpStatus.OK);
+		}
 	}
 }

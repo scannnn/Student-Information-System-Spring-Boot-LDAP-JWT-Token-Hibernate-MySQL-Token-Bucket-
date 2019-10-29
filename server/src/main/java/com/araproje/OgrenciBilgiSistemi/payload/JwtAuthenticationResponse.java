@@ -2,10 +2,15 @@ package com.araproje.OgrenciBilgiSistemi.payload;
 
 public class JwtAuthenticationResponse {
     private String accessToken;
-    private String tokenType = "Bearer";
+    private long expiresInMillis;
 
-    public JwtAuthenticationResponse(String accessToken) {
+    public JwtAuthenticationResponse(String accessToken, long expiresInMillis) {
         this.accessToken = accessToken;
+        this.expiresInMillis = expiresInMillis;
+    }
+    
+    public JwtAuthenticationResponse() {
+    	
     }
 
     public String getAccessToken() {
@@ -16,11 +21,12 @@ public class JwtAuthenticationResponse {
         this.accessToken = accessToken;
     }
 
-    public String getTokenType() {
-        return tokenType;
-    }
+	public long getExpiresInMillis() {
+		return expiresInMillis;
+	}
 
-    public void setTokenType(String tokenType) {
-        this.tokenType = tokenType;
-    }
+	public void setExpiresInMillis(long expiresInMillis) {
+		this.expiresInMillis = expiresInMillis;
+	}
+    
 }

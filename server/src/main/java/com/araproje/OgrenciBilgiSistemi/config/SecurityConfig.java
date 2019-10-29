@@ -39,7 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         			.authenticationEntryPoint(entryPoint)
         		.and()
                 .authorizeRequests()
-                    .antMatchers("/api/auth/**","/api/rest/student/**").permitAll()
+                    .antMatchers("/api/**").permitAll()
                     .anyRequest().authenticated();
     }
 	

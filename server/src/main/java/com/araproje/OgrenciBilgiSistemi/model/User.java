@@ -1,19 +1,17 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
-import java.util.ArrayList;
-
 public class User {
 	private String userName;
 	private String userId;
-	private ArrayList<String> roles = new ArrayList<>();
+	private String role;
 	
 	public User() {}
 	
-	public User(String userName, String userId, ArrayList<String> roles) {
+	public User(String userName, String userId, String role) {
 		super();
 		this.userName = userName;
 		this.userId = userId;
-		this.roles = roles;
+		this.role = role;
 	}
 	
 	public String getUserName() {
@@ -28,10 +26,13 @@ public class User {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public ArrayList<String> getRoles() {
-		return roles;
+
+	public String getRole() {
+		return role;
 	}
-	public void setRoles(ArrayList<String> roles) {
-		this.roles = roles;
+
+	public void setRole(String role) {
+		this.role = role;
 	}
+
 }
