@@ -39,6 +39,15 @@ public class SectionClassroom {
 	@Temporal(TemporalType.DATE)
 	private Date finishDate;
 	
+	public SectionClassroom() {}
+	public SectionClassroom(Section section, Classroom classroom, Date startDate, Date finishDate) {
+		super();
+		this.section = section;
+		this.classroom = classroom;
+		this.startDate = startDate;
+		this.finishDate = finishDate;
+	}
+
 	public int getId() {
 		return id;
 	}

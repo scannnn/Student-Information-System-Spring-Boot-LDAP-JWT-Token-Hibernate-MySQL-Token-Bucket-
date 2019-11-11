@@ -37,9 +37,9 @@ public class Classroom {
 	@OneToMany(mappedBy = "classroom")
 	private Set<SectionClassroom> sectionClassrooms = new HashSet<SectionClassroom>();
 
-	public Classroom(int id, String classroomCode, Department department) {
+	public Classroom() {}
+	public Classroom(String classroomCode, Department department) {
 		super();
-		this.id = id;
 		this.classroomCode = classroomCode;
 		this.department = department;
 	}

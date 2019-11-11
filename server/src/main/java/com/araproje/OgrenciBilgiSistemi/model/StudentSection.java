@@ -29,9 +29,9 @@ public class StudentSection {
 	
 	// ENROLL BAĞINTISI ÜZERİNDEN EKSTRA TUTMAK İSTEDİĞİMİZ ATTRIBUTELER BURAYA YAZILACAK
 	
-	public StudentSection(int id, Student student, Section section) {
+	public StudentSection() {}
+	public StudentSection(Student student, Section section) {
 		super();
-		this.id = id;
 		this.student = student;
 		this.section = section;
 	}

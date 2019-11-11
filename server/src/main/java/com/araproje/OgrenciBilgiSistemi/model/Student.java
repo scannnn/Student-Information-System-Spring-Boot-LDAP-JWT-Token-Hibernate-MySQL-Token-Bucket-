@@ -28,8 +28,8 @@ public class Student {
 	
 	// AYNI ŞEKİLDE ÖĞRENCİ BİLGİLERİ DE TUTULSUN
 	
-	@Column(name = "studentId", nullable = false, updatable = true)
-    private String studentId;
+	@Column(name = "studentCode", nullable = false, updatable = true)
+    private String studentCode;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
@@ -39,10 +39,10 @@ public class Student {
 	@OneToMany(mappedBy = "student")
 	private Set<StudentSection> studentSections = new HashSet<StudentSection>();
 
-	public Student(int id, String studentId, Department department) {
+	public Student() {}
+	public Student(String studentCode, Department department) {
 		super();
-		this.id = id;
-		this.studentId = studentId;
+		this.studentCode = studentCode;
 		this.department = department;
 	}
 
@@ -54,12 +54,12 @@ public class Student {
 		this.id = id;
 	}
 
-	public String getStudentId() {
-		return studentId;
+	public String getStudentCode() {
+		return studentCode;
 	}
 
-	public void setStudentId(String studentId) {
-		this.studentId = studentId;
+	public void setStudentCode(String studentCode) {
+		this.studentCode = studentCode;
 	}
 
 	public Department getDepartment() {

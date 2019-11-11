@@ -13,15 +13,15 @@ public class GradeType {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "grade_id")
+	@Column(name = "id")
 	private int id;
 	
 	@Column(name = "name", nullable = false, updatable = true)
     private String name;
 
-	public GradeType(int id, String name) {
+	public GradeType() {}
+	public GradeType(String name) {
 		super();
-		this.id = id;
 		this.name = name;
 	}
 

@@ -19,7 +19,7 @@ public class Grade {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "grade_id")
+	@Column(name = "id")
 	private int id;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -32,9 +32,9 @@ public class Grade {
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private GradeType gradeType;
 
-	public Grade(int id, StudentSection studentSection, GradeType gradeType) {
+	public Grade() {}
+	public Grade(StudentSection studentSection, GradeType gradeType) {
 		super();
-		this.id = id;
 		this.studentSection = studentSection;
 		this.gradeType = gradeType;
 	}

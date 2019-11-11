@@ -47,9 +47,10 @@ public class Course {
 	@ManyToMany(mappedBy = "prerequisities")
 	private List<Course> whosprerequisities;
 
-	public Course(int id, String courseCode, String title, Department department) {
+	public Course() {}
+
+	public Course(String courseCode, String title, Department department) {
 		super();
-		this.id = id;
 		this.courseCode = courseCode;
 		this.title = title;
 		this.department = department;

@@ -22,9 +22,9 @@ public class Department {
 	@Column(name = "title")
     private String title;
 	
-	public Department(int id, String departmentCode, String title) {
+	public Department() {}
+	public Department(String departmentCode, String title) {
 		super();
-		this.id = id;
 		this.departmentCode = departmentCode;
 		this.title = title;
 	}

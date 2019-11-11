@@ -25,18 +25,18 @@ public class Instructor {
 	// OGRETMEN BİLGİLERİ TUTULACAKSA YAZ ONLARI DA
 	// BENCE TUTULMALI AMA ŞUAN ÜŞENDİM SALI TUTALIM (BU LDAP DAKİ ŞİFRE VE KULLANICI ADI HARİÇ)
 	
-	@Column(name = "instructorId", nullable = false, updatable = true)
-    private String instructorId;
+	@Column(name = "instructorCode", nullable = false, updatable = true)
+    private String instructorCode;
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Department department;
 
-	public Instructor(int id, String instructorId, Department department) {
+	public Instructor() {}
+	public Instructor(String instructorCode, Department department) {
 		super();
-		this.id = id;
-		this.instructorId = instructorId;
+		this.instructorCode = instructorCode;
 		this.department = department;
 	}
 
@@ -48,12 +48,12 @@ public class Instructor {
 		this.id = id;
 	}
 
-	public String getInstructorId() {
-		return instructorId;
+	public String getInstructorCode() {
+		return instructorCode;
 	}
 
-	public void setInstructorId(String instructorId) {
-		this.instructorId = instructorId;
+	public void setInstructorCode(String instructorCode) {
+		this.instructorCode = instructorCode;
 	}
 
 	public Department getDepartment() {
