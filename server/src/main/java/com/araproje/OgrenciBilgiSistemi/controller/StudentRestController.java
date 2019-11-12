@@ -39,7 +39,7 @@ public class StudentRestController {
 		try {
 			departmentRepository.save(new Department("EHM", "Elektronik ve Haberleşme Mühendisliği"));
 			System.out.println("HEADERS = "+request.getHeader("classroomCode")+request.getHeader("departmentCode"));
-			classroomService.create(request.getHeader("classroomCode"), request.getHeader("departmentCode"));
+			classroomService.create(request.getHeader("classroomCode"), departmentRepository.findByDepartmentCode(request.getHeader("departmentCode")));
 		}
 		catch(Exception e) {
 			e.printStackTrace();

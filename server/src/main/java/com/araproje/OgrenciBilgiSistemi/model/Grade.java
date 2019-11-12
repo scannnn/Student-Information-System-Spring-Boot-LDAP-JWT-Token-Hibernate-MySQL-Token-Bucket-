@@ -32,11 +32,15 @@ public class Grade {
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private GradeType gradeType;
 
+	@Column (name = "grade")
+	private long grade;
+	
 	public Grade() {}
-	public Grade(StudentSection studentSection, GradeType gradeType) {
+	public Grade(StudentSection studentSection, GradeType gradeType, long grade) {
 		super();
 		this.studentSection = studentSection;
 		this.gradeType = gradeType;
+		this.grade = grade;
 	}
 
 	public int getId() {
