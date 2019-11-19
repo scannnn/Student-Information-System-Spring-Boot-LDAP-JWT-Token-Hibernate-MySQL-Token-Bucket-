@@ -79,7 +79,7 @@ public class AuthenticationController {
 			                HttpStatus.BAD_REQUEST);
 			   	 }
 		   	 }
-	   	 	username = jwtTokenProvider.getUserFromJWT(jwt).getUserName();
+	   	 	username = jwtTokenProvider.getUserFromJWT(jwt).getUserId();
 	 		return new ResponseEntity(new ApiResponse(true,MessageConstants.VALID_TOKEN + username), HttpStatus.OK);
 		}
 	}

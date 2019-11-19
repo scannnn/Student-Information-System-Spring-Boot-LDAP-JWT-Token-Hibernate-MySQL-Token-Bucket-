@@ -9,8 +9,8 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import com.araproje.OgrenciBilgiSistemi.security.JwtTokenProvider;
 import com.araproje.OgrenciBilgiSistemi.util.MessageConstants;
 
-public class TokenControlInterceptor implements HandlerInterceptor {
-	
+public class StudentControlInterceptor implements HandlerInterceptor{
+
 	@Autowired
 	JwtTokenProvider jwtTokenProvider;
 	
@@ -32,8 +32,12 @@ public class TokenControlInterceptor implements HandlerInterceptor {
 		   		 response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
 		   		return false;
 		   	 }
-		   	 // RESPONSE' YE ROLE EKLENECEK
-		     return true;
+		   	 if(! jwtTokenProvider.getUserFromJWT(jwt).getRole().equalsIgnoreCase("Student")) {
+		   		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bu sayfayı görüntüleyebilmek için gerekli yetkiye sahip değilsiniz.");
+		   		return false;
+		   	 }
+		   	 return true;
+		     
 		}
 	}
 }

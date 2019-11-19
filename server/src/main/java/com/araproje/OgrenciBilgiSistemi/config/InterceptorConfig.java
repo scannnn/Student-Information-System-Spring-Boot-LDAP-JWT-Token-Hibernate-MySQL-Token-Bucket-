@@ -5,17 +5,33 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.araproje.OgrenciBilgiSistemi.Interceptors.TokenControlInterceptor;
+import com.araproje.OgrenciBilgiSistemi.Interceptors.StudentControlInterceptor;
+import com.araproje.OgrenciBilgiSistemi.Interceptors.AdminControlInterceptor;
+import com.araproje.OgrenciBilgiSistemi.Interceptors.InstructorControlInterceptor;
 
 @Configuration
 public class InterceptorConfig implements WebMvcConfigurer  {
 	
 	@Bean
-	public TokenControlInterceptor tokenControlInterceptor() {
-	    return new TokenControlInterceptor();
+	public AdminControlInterceptor adminControlInterceptor() {
+	    return new AdminControlInterceptor();
 	}
+	
+	@Bean
+	public StudentControlInterceptor studentControlInterceptor() {
+	    return new StudentControlInterceptor();
+	}
+	
+	@Bean
+	public InstructorControlInterceptor instructorControlInterceptor() {
+	    return new InstructorControlInterceptor();
+	}
+	
+	
 	@Override
     public void addInterceptors(InterceptorRegistry registry){
-        registry.addInterceptor(tokenControlInterceptor()).addPathPatterns("/api/rest/**");
+        registry.addInterceptor(adminControlInterceptor()).addPathPatterns("/api/rest/admin/**");
+        registry.addInterceptor(studentControlInterceptor()).addPathPatterns("/api/rest/student/**");
+        registry.addInterceptor(instructorControlInterceptor()).addPathPatterns("/api/rest/instructor/**");
     }
 }	

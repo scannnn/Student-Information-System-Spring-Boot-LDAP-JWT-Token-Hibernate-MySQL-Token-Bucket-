@@ -50,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         auth
                 .ldapAuthentication()
                     .userDnPatterns("uid={0},ou=people")
-                    .groupSearchBase("ou=groups")
                 .contextSource(contextSource())
                 .passwordCompare()
                     .passwordEncoder(new LdapShaPasswordEncoder())

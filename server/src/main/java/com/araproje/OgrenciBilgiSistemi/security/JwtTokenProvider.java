@@ -2,12 +2,14 @@ package com.araproje.OgrenciBilgiSistemi.security;
 
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.ldap.userdetails.LdapUserDetailsImpl;
 import org.springframework.stereotype.Component;
 
 import com.araproje.OgrenciBilgiSistemi.model.User;
+import com.araproje.OgrenciBilgiSistemi.service.UserService;
 import com.araproje.OgrenciBilgiSistemi.util.MessageConstants;
 
 import io.jsonwebtoken.Claims;
@@ -26,6 +28,9 @@ public class JwtTokenProvider {
 	@Value("${app.jwtExpirationInMs}")
     private int jwtExpirationInMs;
 	
+	@Autowired
+	UserService userService;
+	
 	public Claims generateToken(Authentication authentication) {
 
     	LdapUserDetailsImpl userPrincipal = (LdapUserDetailsImpl) authentication.getPrincipal();
@@ -35,26 +40,18 @@ public class JwtTokenProvider {
         Claims claims = Jwts.claims()
 				.setExpiration(expiryDate)
 				.setSubject(userPrincipal.getUsername());
-        //claims.put("roles", userPrincipal.getAuthorities());
-        System.out.println(userPrincipal.getAuthorities().getClass());
 		// USERID EKLE
         
         return claims;
     }
 	
-	//@SuppressWarnings("unchecked")
 	public User getUserFromJWT(String token) {
 		
         Claims claims = Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody();
-        
-        User user = new User();
-        user.setUserName(claims.getSubject());
-        //user.setRoles((ArrayList<String>) claims.get("roles"));
-        //System.out.println("DENEME= "+user.getRoles());
-        //USERID EKLE KOY
+        User user = userService.find(claims.getSubject());
         return user;
     }
 	

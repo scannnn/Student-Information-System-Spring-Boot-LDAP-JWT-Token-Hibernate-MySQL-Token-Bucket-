@@ -1,25 +1,21 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
 public class User {
-	private String userName;
 	private String userId;
+	private String fullName;
+	private String lastName;
 	private String role;
 	
 	public User() {}
 	
-	public User(String userName, String userId, String role) {
+	public User(String userId, String fullName, String lastName, String role) {
 		super();
-		this.userName = userName;
 		this.userId = userId;
+		this.fullName = fullName;
+		this.lastName = lastName;
 		this.role = role;
 	}
-	
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+
 	public String getUserId() {
 		return userId;
 	}
@@ -33,6 +29,22 @@ public class User {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public String getFullName() {
+		return fullName;
+	}
+
+	public void setFullName(String fullName) {
+		this.fullName = fullName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
 }

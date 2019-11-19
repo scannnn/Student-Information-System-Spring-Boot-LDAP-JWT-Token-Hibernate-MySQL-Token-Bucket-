@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import org.springframework.web.bind.annotation.RestController;
 
-import com.araproje.OgrenciBilgiSistemi.model.Department;
 import com.araproje.OgrenciBilgiSistemi.repository.DepartmentRepository;
 import com.araproje.OgrenciBilgiSistemi.security.JwtTokenProvider;
 import com.araproje.OgrenciBilgiSistemi.service.ClassroomService;
@@ -34,18 +33,4 @@ public class StudentRestController {
 	    	      .body(jwtTokenProvider.getUserFromJWT(jwt));
 	}
 	
-	@PostMapping("/deneme")
-	public ResponseEntity<?> deneme(HttpServletRequest request){
-		try {
-			departmentRepository.save(new Department("EHM", "Elektronik ve Haberleşme Mühendisliği"));
-			System.out.println("HEADERS = "+request.getHeader("classroomCode")+request.getHeader("departmentCode"));
-			classroomService.create(request.getHeader("classroomCode"), departmentRepository.findByDepartmentCode(request.getHeader("departmentCode")));
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-			return ResponseEntity.ok("OLMADI");
-		}
-		return ResponseEntity.ok()
-	    	      .body("oldu");
-	}
 }
