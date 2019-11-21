@@ -19,19 +19,32 @@ public class CourseService {
 		courseRepository.save(new Course(courseCode, title, department));
 	}
 	
-	public void update(Course course) {
+	public void update(Course course, Integer id) {
+		course.setId(id);
 		courseRepository.save(course);
+	}
+	
+	public void delete(Integer id) {
+		courseRepository.deleteById(id);
 	}
 	
 	public void delete(String courseCode) {
 		courseRepository.deleteById(courseRepository.findByCourseCode(courseCode).getId());
 	}
-	// DELETE İŞLEMLERİ GÜVENLİK ACISINDAN DB ID' Sİ İLE YAPILSIN MI SOR
+	
 	public Course get(String courseCode) {
 		return courseRepository.findByCourseCode(courseCode);
 	}
 	
+	public Course get(Integer id) {
+		return courseRepository.findById(id).get();
+	}
+	
 	public List<Course> getAll(){
 		return (List<Course>)courseRepository.findAll();
+	}
+	
+	public boolean isExist(Integer id) {
+		return courseRepository.existsById(id);
 	}
 }

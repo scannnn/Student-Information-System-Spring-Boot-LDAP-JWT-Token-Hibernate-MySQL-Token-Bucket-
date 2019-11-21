@@ -58,15 +58,12 @@ public class Course {
 		whosprerequisities = new ArrayList<Course>();
 	}
 
-	public Course(int id, String courseCode, String title, Department department, List<Course> prerequisities,
-			List<Course> whosprerequisities) {
+	public Course(String courseCode, String title, Department department, List<Course> prerequisities) {
 		super();
-		this.id = id;
 		this.courseCode = courseCode;
 		this.title = title;
 		this.department = department;
 		this.prerequisities = prerequisities;
-		this.whosprerequisities = whosprerequisities;
 	}
 
 	public int getId() {
