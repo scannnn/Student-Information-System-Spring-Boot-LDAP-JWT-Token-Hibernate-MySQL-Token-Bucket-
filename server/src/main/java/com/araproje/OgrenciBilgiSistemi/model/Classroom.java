@@ -29,7 +29,7 @@ public class Classroom {
 	@Column(name = "classroomCode", nullable = false, updatable = true)
     private String classroomCode;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Department department;

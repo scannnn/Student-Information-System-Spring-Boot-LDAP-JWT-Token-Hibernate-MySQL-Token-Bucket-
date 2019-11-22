@@ -36,6 +36,7 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 		   		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Bu sayfayı görüntüleyebilmek için gerekli yetkiye sahip değilsiniz.");
 		   		return false;
 		   	 }
+		   	 request.setAttribute("uid", jwtTokenProvider.getUserFromJWT(jwt).getUserId());
 		   	 return true;
 		     
 		}

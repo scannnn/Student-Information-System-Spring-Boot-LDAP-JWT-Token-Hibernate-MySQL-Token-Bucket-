@@ -39,7 +39,7 @@ public class CourseRestController {
 				prerequisites.add(courseService.get(courseCode));
 			}
 			courseService.create((String)JSON.get("courseCode"), (String)JSON.get("title"),
-					departmentService.get((String)JSON.get("departmentCode")), Integer.parseInt( (String)JSON.get("credit")),
+					departmentService.get((String)JSON.get("departmentCode")), (int)JSON.get("credit"),
 					 (String)JSON.get("language"), prerequisites);
 		}
 		catch(Exception e){
@@ -49,7 +49,7 @@ public class CourseRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(courseService.get((String)JSON.get("courseCode")));
+				.body("Added.");
 	}
 	
 	@DeleteMapping("/{id}")
@@ -106,7 +106,7 @@ public class CourseRestController {
 					prerequisities.add(courseService.get(courseCode));
 				}
 				courseService.update(new Course((String)JSON.get("courseCode"), (String)JSON.get("title"),
-					departmentService.get((String)JSON.get("departmentCode")),Integer.parseInt( (String)JSON.get("credit")),
+					departmentService.get((String)JSON.get("departmentCode")), (int)JSON.get("credit"),
 					(String)JSON.get("language"), prerequisities), Integer.parseInt(id));
 			}
 		}
@@ -116,6 +116,6 @@ public class CourseRestController {
 					.body(e.getMessage());
 		}
 		return ResponseEntity
-				.status(HttpStatus.ACCEPTED).body(courseService.get(Integer.parseInt(id)));
+				.status(HttpStatus.ACCEPTED).body("Updated.");
 	}
 }

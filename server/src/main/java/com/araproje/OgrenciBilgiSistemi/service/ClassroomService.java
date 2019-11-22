@@ -31,6 +31,10 @@ public class ClassroomService {
 		return classroomRepository.findByClassroomCode(classroomCode);
 	}
 	
+	public Classroom get(Integer id) {
+		return classroomRepository.findById(id).get();
+	}
+	
 	public List<Classroom> getAll() {
 		return (List<Classroom>)classroomRepository.findAll();
 	}

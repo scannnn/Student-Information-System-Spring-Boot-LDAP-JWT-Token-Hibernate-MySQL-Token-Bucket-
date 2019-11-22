@@ -9,7 +9,7 @@ objectclass: top
 objectclass: organizationalUnit
 ou: people
 
-dn: uid=can,ou=people,dc=araproje,dc=com
+dn: uid=15011039,ou=people,dc=araproje,dc=com
 objectclass: top
 objectclass: user
 objectclass: organizationalPerson
