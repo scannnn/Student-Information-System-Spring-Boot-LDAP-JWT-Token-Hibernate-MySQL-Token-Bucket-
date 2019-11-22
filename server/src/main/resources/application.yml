@@ -1,5 +1,5 @@
 app:
-  jwtExpirationInMs: '360000'
+  jwtExpirationInMs: '3600000'
   jwtSecret: usis
 logging:
   level:

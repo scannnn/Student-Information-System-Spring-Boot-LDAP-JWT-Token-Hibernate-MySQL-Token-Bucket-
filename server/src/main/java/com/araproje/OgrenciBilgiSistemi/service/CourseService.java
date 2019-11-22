@@ -15,8 +15,9 @@ public class CourseService {
 	@Autowired
 	CourseRepository courseRepository;
 	
-	public void create(String courseCode, String title, Department department) {
-		courseRepository.save(new Course(courseCode, title, department));
+	public void create(String courseCode, String title, Department department, int credit, String language,
+			List<Course> prerequisites) {
+		courseRepository.save(new Course(courseCode, title, department, credit, language, prerequisites));
 	}
 	
 	public void update(Course course, Integer id) {

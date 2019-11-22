@@ -20,6 +20,7 @@ import com.araproje.OgrenciBilgiSistemi.model.Course;
 import com.araproje.OgrenciBilgiSistemi.service.CourseService;
 import com.araproje.OgrenciBilgiSistemi.service.DepartmentService;
 
+@SuppressWarnings("unchecked")
 @RestController
 @RequestMapping("/api/rest/admin/courses")
 public class CourseRestController {
@@ -28,14 +29,18 @@ public class CourseRestController {
 	CourseService courseService;
 	@Autowired
 	DepartmentService departmentService;
-	
-	// derse bağlı dersleri eklemeyi konuşun nasıl olsun ne atılsın. Department nasıl atılsın bunu konuşun
-	// department i departmentCode olarak mı atıcan sadece yoksa direkt koyulucak department i JSON olarak bana mı atıcaksın
+
 	@PostMapping
-	public ResponseEntity<?> add(@RequestBody Map<String, String> JSON){
+	public ResponseEntity<?> add(@RequestBody Map<String, Object> JSON){
 		try {
-			courseService.create(JSON.get("courseCode"), JSON.get("title"),
-					departmentService.get(JSON.get("departmentCode")));
+			List<Course> prerequisites = new ArrayList<>();
+			List<String> prerequisitiesCodes = (List<String>) JSON.get("prerequisites");
+			for(String courseCode : prerequisitiesCodes) {
+				prerequisites.add(courseService.get(courseCode));
+			}
+			courseService.create((String)JSON.get("courseCode"), (String)JSON.get("title"),
+					departmentService.get((String)JSON.get("departmentCode")), Integer.parseInt( (String)JSON.get("credit")),
+					 (String)JSON.get("language"), prerequisites);
 		}
 		catch(Exception e){
 			return ResponseEntity
@@ -44,7 +49,7 @@ public class CourseRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(courseService.get(JSON.get("courseCode")));
+				.body(courseService.get((String)JSON.get("courseCode")));
 	}
 	
 	@DeleteMapping("/{id}")
@@ -91,18 +96,18 @@ public class CourseRestController {
 				.status(HttpStatus.OK).body(course);
 	}
 	
-	// BAĞLI OLDUGU DERSLERİ DERS OBJESİ OLARAK MI YOKSA DERS KODU OLARAK MI ATILACAK?
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateAllFields(@PathVariable String id, @RequestBody Map<String, String> JSON){
+	public ResponseEntity<?> updateAllFields(@PathVariable String id, @RequestBody Map<String, Object> JSON){
 		try {
 			if(courseService.isExist(Integer.parseInt(id))) {
 				List<Course> prerequisities = new ArrayList<>();
-				String[] prerequisitiesCodes = null;		// JSON OBJESİNDEN ALDIĞIN ÖN KOŞULLAR LİSTESİNİ ÇEVİRMEYE ÇALIŞ KONUŞ
+				List<String> prerequisitiesCodes = (List<String>) JSON.get("prerequisites");
 				for(String courseCode : prerequisitiesCodes) {
 					prerequisities.add(courseService.get(courseCode));
 				}
-				courseService.update(new Course(JSON.get("courseCode"), JSON.get("title"),
-					departmentService.get(JSON.get("departmentCode")), prerequisities), Integer.parseInt(id));
+				courseService.update(new Course((String)JSON.get("courseCode"), (String)JSON.get("title"),
+					departmentService.get((String)JSON.get("departmentCode")),Integer.parseInt( (String)JSON.get("credit")),
+					(String)JSON.get("language"), prerequisities), Integer.parseInt(id));
 			}
 		}
 		catch(Exception e) {
