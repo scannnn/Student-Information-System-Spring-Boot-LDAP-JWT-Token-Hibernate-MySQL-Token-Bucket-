@@ -15,8 +15,9 @@ public class StudentService {
 	@Autowired
 	StudentRepository studentRepository;
 	
-	public void create(String studentCode, Department department) {
-		studentRepository.save(new Student(studentCode, department));
+	public void create(String firstName, String lastName, String mail, String address, String phoneNumber, 
+			String studentCode, Department department) {
+		studentRepository.save(new Student(firstName, lastName, mail, address, phoneNumber, studentCode, department));
 	}
 	
 	public void update(Student student) {

@@ -1,6 +1,11 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -29,12 +34,12 @@ public class Section {
 	@Column(name = "sectionCode", nullable = false, updatable = true)
     private String sectionCode;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "course_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Course course;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "instructor_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Instructor instructor;
@@ -85,8 +90,19 @@ public class Section {
 		this.instructor = instructor;
 	}
 
-	public Set<SectionClassroom> getSectionClassrooms() {
-		return sectionClassrooms;
+	public List<Map<String, String>> getSectionClassrooms() {
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+		List<Map<String, String>> sectClassrooms = new ArrayList<>();
+		
+		for(SectionClassroom oneSecClass : sectionClassrooms) {
+			Map<String, String> temp = new HashMap<>();
+			temp.put("sectionCode", oneSecClass.getSection().getSectionCode());
+			temp.put("classroomCode", oneSecClass.getClassroom().getClassroomCode());
+			temp.put("startDate", formatter.format(oneSecClass.getStartDate()));
+			temp.put("finishDate", formatter.format(oneSecClass.getFinishDate()));
+			sectClassrooms.add(temp);
+		}
+		return sectClassrooms;
 	}
 
 	public void setSectionClassrooms(Set<SectionClassroom> sectionClassrooms) {

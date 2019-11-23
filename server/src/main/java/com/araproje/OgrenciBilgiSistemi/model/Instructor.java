@@ -22,8 +22,20 @@ public class Instructor {
     @Column(name = "id", nullable = false, updatable = false)
 	private int id;
 	
-	// OGRETMEN BİLGİLERİ TUTULACAKSA YAZ ONLARI DA
-	// BENCE TUTULMALI AMA ŞUAN ÜŞENDİM SALI TUTALIM (BU LDAP DAKİ ŞİFRE VE KULLANICI ADI HARİÇ)
+	@Column(name = "firstName")
+    private String firstName;
+	
+	@Column(name = "lastName")
+    private String lastName;
+	
+	@Column(name = "mail")
+    private String mail;
+	
+	@Column(name = "address")
+    private String address;
+	
+	@Column(name = "phoneNumber")
+    private String phoneNumber;
 	
 	@Column(name = "instructorCode", nullable = false, updatable = true)
     private String instructorCode;
@@ -34,8 +46,15 @@ public class Instructor {
 	private Department department;
 
 	public Instructor() {}
-	public Instructor(String instructorCode, Department department) {
+
+	public Instructor(String firstName, String lastName, String mail, String address, String phoneNumber,
+			String instructorCode, Department department) {
 		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mail = mail;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
 		this.instructorCode = instructorCode;
 		this.department = department;
 	}
@@ -62,6 +81,46 @@ public class Instructor {
 
 	public void setDepartment(Department department) {
 		this.department = department;
+	}
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
 	}
 	
 }

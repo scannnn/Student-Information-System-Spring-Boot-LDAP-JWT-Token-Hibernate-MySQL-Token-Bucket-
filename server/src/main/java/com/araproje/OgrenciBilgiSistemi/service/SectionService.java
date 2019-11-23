@@ -20,7 +20,8 @@ public class SectionService {
 		sectionRepository.save(new Section(sectionCode, course, instructor));
 	}
 	
-	public void update(Section section) {
+	public void update(Section section, Integer id) {
+		section.setId(id);
 		sectionRepository.save(section);
 	}
 	
@@ -28,11 +29,23 @@ public class SectionService {
 		sectionRepository.deleteById(sectionRepository.findBySectionCode(sectionCode).getId());
 	}
 	
+	public void delete(Integer id) {
+		sectionRepository.deleteById(id);
+	}
+	
 	public Section get(String sectionCode) {
 		return sectionRepository.findBySectionCode(sectionCode);
 	}
 	
+	public Section get(Integer id) {
+		return sectionRepository.findById(id).get();
+	}
+	
 	public List<Section> getAll(){
 		return (List<Section>)sectionRepository.findAll();
+	}
+	
+	public boolean isExist(Integer id) {
+		return sectionRepository.existsById(id);
 	}
 }

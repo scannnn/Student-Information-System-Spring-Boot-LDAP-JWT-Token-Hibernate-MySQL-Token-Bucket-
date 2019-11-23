@@ -15,8 +15,9 @@ public class InstructorService {
 	@Autowired
 	InstructorRepository instructorRepository;
 	
-	public void create(String instructorCode, Department department) {
-		instructorRepository.save(new Instructor(instructorCode, department));
+	public void create(String firstName, String lastName, String mail, String address, String phoneNumber, 
+			String instructorCode, Department department) {
+		instructorRepository.save(new Instructor(firstName, lastName, mail, address, phoneNumber, instructorCode, department));
 	}
 	
 	public void update(Instructor instructor) {

@@ -29,7 +29,7 @@ sn: ADMIN SURNAME
 role: Admin
 userPassword: {SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=
 
-dn: uid=mutkukalay,ou=people,dc=araproje,dc=com
+dn: uid=99011001,ou=people,dc=araproje,dc=com
 objectclass: top
 objectclass: user
 objectclass: organizationalPerson

@@ -26,7 +26,20 @@ public class Student {
     @Column(name = "id", nullable = false, updatable = false)
 	private int id;
 	
-	// AYNI ŞEKİLDE ÖĞRENCİ BİLGİLERİ DE TUTULSUN
+	@Column(name = "firstName")
+    private String firstName;
+	
+	@Column(name = "lastName")
+    private String lastName;
+	
+	@Column(name = "mail")
+    private String mail;
+	
+	@Column(name = "address")
+    private String address;
+	
+	@Column(name = "phoneNumber")
+    private String phoneNumber;
 	
 	@Column(name = "studentCode", nullable = false, updatable = true)
     private String studentCode;
@@ -40,11 +53,20 @@ public class Student {
 	private Set<StudentSection> studentSections = new HashSet<StudentSection>();
 
 	public Student() {}
-	public Student(String studentCode, Department department) {
+
+
+	public Student(String firstName, String lastName, String mail, String address, String phoneNumber,
+			String studentCode, Department department) {
 		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.mail = mail;
+		this.address = address;
+		this.phoneNumber = phoneNumber;
 		this.studentCode = studentCode;
 		this.department = department;
 	}
+
 
 	public int getId() {
 		return id;
@@ -77,5 +99,34 @@ public class Student {
 	public void setStudentSections(Set<StudentSection> studentSections) {
 		this.studentSections = studentSections;
 	}
-	
+	public String getFirstName() {
+		return firstName;
+	}
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	public String getLastName() {
+		return lastName;
+	}
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	public String getMail() {
+		return mail;
+	}
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
 }
