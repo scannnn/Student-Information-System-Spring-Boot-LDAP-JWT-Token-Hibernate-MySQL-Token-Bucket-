@@ -1,7 +1,5 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
-import java.util.Date;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,8 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "section_classroom")
@@ -31,21 +27,28 @@ public class SectionClassroom {
     @JoinColumn(name = "classroom_id")
 	private Classroom classroom;
 	
-	@Column(name = "startDate", nullable = false, updatable = true)
-	@Temporal(TemporalType.DATE)
-	private Date startDate;
+	@Column(name = "type")
+	private String type;
 	
-	@Column(name = "finishDate", nullable = false, updatable = true)
-	@Temporal(TemporalType.DATE)
-	private Date finishDate;
+	@Column(name = "day")
+	private String day;
+	
+	@Column(name = "startTime", nullable = false, updatable = true)
+	private String startTime;
+	
+	@Column(name = "finishTime", nullable = false, updatable = true)
+	private String finishTime;
 	
 	public SectionClassroom() {}
-	public SectionClassroom(Section section, Classroom classroom, Date startDate, Date finishDate) {
+
+	public SectionClassroom(Section section, Classroom classroom, String type, String startTime, String finishTime, String day) {
 		super();
 		this.section = section;
 		this.classroom = classroom;
-		this.startDate = startDate;
-		this.finishDate = finishDate;
+		this.type = type;
+		this.startTime = startTime;
+		this.finishTime = finishTime;
+		this.day = day;
 	}
 
 	public int getId() {
@@ -72,20 +75,34 @@ public class SectionClassroom {
 		this.classroom = classroom;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public String getStartTime() {
+		return startTime;
 	}
 
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
-	public Date getFinishDate() {
-		return finishDate;
+	public String getFinishTime() {
+		return finishTime;
 	}
 
-	public void setFinishDate(Date finishDate) {
-		this.finishDate = finishDate;
+	public void setFinishTime(String finishTime) {
+		this.finishTime = finishTime;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getDay() {
+		return day;
+	}
+
+	public void setDay(String day) {
+		this.day = day;
 	}
 	
 }

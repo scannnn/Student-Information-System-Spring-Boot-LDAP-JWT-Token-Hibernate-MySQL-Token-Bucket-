@@ -1,5 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class SectionService {
 	@Autowired
 	SectionRepository sectionRepository;
 	
-	public void create(String sectionCode, Course course, Instructor instructor) {
-		sectionRepository.save(new Section(sectionCode, course, instructor));
+	public void create(String sectionCode, Course course, Instructor instructor, Date startDate, Date finishDate) {
+		sectionRepository.save(new Section(sectionCode, course, instructor, startDate, finishDate));
 	}
 	
 	public void update(Section section, Integer id) {

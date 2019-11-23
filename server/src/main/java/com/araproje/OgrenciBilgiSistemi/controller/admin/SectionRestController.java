@@ -13,19 +13,18 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.araproje.OgrenciBilgiSistemi.model.Section;
-import com.araproje.OgrenciBilgiSistemi.model.SectionClassroom;
 import com.araproje.OgrenciBilgiSistemi.service.ClassroomService;
 import com.araproje.OgrenciBilgiSistemi.service.CourseService;
 import com.araproje.OgrenciBilgiSistemi.service.InstructorService;
 import com.araproje.OgrenciBilgiSistemi.service.SectionClassroomService;
 import com.araproje.OgrenciBilgiSistemi.service.SectionService;
 
+@SuppressWarnings("unchecked")
 @RestController
 @RequestMapping("/api/rest/admin/sections")
 public class SectionRestController {
@@ -43,15 +42,27 @@ public class SectionRestController {
 	DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	
-	// SECTION OLUŞTURMA AYRI VE SECTIONLARA SINIF VE SAAT ATAMA AYRI MI OLACAK YOKSA AYNI MI OLACAK SOR.
 	@PostMapping
 	public ResponseEntity<?> add(@RequestBody Map<String, Object> JSON){
 		try {
-			sectionService.create((String)JSON.get("sectionCode"), courseService.get((String)JSON.get("courseCode")), 
-					instructorService.get((String)JSON.get("instructorCode")));
-			sectionClassroomService.create(sectionService.get((String)JSON.get("sectionCode")), 
-					classroomService.get((String)JSON.get("classroomCode")), (Date)sourceFormat.parse((String)JSON.get("startDate")),
-					(Date)sourceFormat.parse((String)JSON.get("finishDate"))); // YUKARIDAKİ SORUYA GÖRE BURASI OLACAK MI OLMAYACAK MI SOR???
+			List<Map<String, String>> sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
+			if(sectionDays != null) {
+				sectionService.create((String)JSON.get("sectionCode"), courseService.get((String)JSON.get("courseCode")), 
+						instructorService.get((String)JSON.get("instructorCode")), (Date)sourceFormat.parse((String)JSON.get("startDate")), 
+						(Date)sourceFormat.parse((String)JSON.get("finishDate")));
+				
+				for(Map<String, String> oneSectionDay : sectionDays) {
+					sectionClassroomService.create(sectionService.get((String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
+							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+							oneSectionDay.get("day"));
+				}
+			}
+			else {
+				return ResponseEntity
+						.status(HttpStatus.BAD_REQUEST)
+						.body("sectionDays is empty.");
+			}
+			
 		}catch (Exception e) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
@@ -109,15 +120,15 @@ public class SectionRestController {
 				.body(section);
 	}
 	
-	@PutMapping("/{id}")
+	// YUKARIDAKİ ADD METODUNA BAKARAK SECTION CLASSLARI 0 LAYIP DEGİSTİREREK PUT MAPPING I YAZ
+	/*@PutMapping("/{id}")
 	public ResponseEntity<?> updateAllFields(@PathVariable String id, @RequestBody Map<String, Object> JSON){
 		try {
 			if(sectionService.isExist(Integer.parseInt(id))) {
-				sectionService.update(new Section((String)JSON.get("sectionCode"), courseService.get((String)JSON.get("courseCode")), 
-						instructorService.get((String)JSON.get("instructorCode"))), Integer.parseInt(id));
-				sectionClassroomService.update(new SectionClassroom(sectionService.get((String)JSON.get("sectionCode")), 
-						classroomService.get((String)JSON.get("classroomCode")),(Date)sourceFormat.parse((String)JSON.get("startDate")),
-						(Date)sourceFormat.parse((String)JSON.get("finishDate"))));  // SOR
+				sectionService.create((String)JSON.get("sectionCode"), courseService.get((String)JSON.get("courseCode")), 
+						instructorService.get((String)JSON.get("instructorCode")), (Date)sourceFormat.parse((String)JSON.get("startDate")), 
+						(Date)sourceFormat.parse((String)JSON.get("finishDate")));
+			
 			}
 		}
 		catch (Exception e) {
@@ -128,5 +139,5 @@ public class SectionRestController {
 		return ResponseEntity
 				.status(HttpStatus.ACCEPTED)
 				.body("Updated.");
-	}
+	}*/
 }

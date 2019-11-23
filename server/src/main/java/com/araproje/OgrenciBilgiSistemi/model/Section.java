@@ -1,7 +1,7 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -18,6 +18,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -44,6 +46,14 @@ public class Section {
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Instructor instructor;
 	
+	@Column(name = "startDate", nullable = false, updatable = true)
+	@Temporal(TemporalType.DATE)
+	private Date startDate;
+	
+	@Column(name = "finishDate", nullable = false, updatable = true)
+	@Temporal(TemporalType.DATE)
+	private Date finishDate;
+	
 	@OneToMany(mappedBy = "section")
 	private Set<SectionClassroom> sectionClassrooms = new HashSet<SectionClassroom>();
 	
@@ -51,11 +61,30 @@ public class Section {
 	private Set<StudentSection> studentSections = new HashSet<StudentSection>();
 
 	public Section() {}
-	public Section(String sectionCode, Course course, Instructor instructor) {
+
+	public Section(String sectionCode, Course course, Instructor instructor, Date startDate, Date finishDate) {
 		super();
 		this.sectionCode = sectionCode;
 		this.course = course;
 		this.instructor = instructor;
+		this.startDate = startDate;
+		this.finishDate = finishDate;
+	}
+
+	public Date getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+
+	public Date getFinishDate() {
+		return finishDate;
+	}
+
+	public void setFinishDate(Date finishDate) {
+		this.finishDate = finishDate;
 	}
 
 	public int getId() {
@@ -91,15 +120,16 @@ public class Section {
 	}
 
 	public List<Map<String, String>> getSectionClassrooms() {
-		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		List<Map<String, String>> sectClassrooms = new ArrayList<>();
 		
 		for(SectionClassroom oneSecClass : sectionClassrooms) {
 			Map<String, String> temp = new HashMap<>();
-			temp.put("sectionCode", oneSecClass.getSection().getSectionCode());
+			temp.put("id", ""+oneSecClass.getId());
 			temp.put("classroomCode", oneSecClass.getClassroom().getClassroomCode());
-			temp.put("startDate", formatter.format(oneSecClass.getStartDate()));
-			temp.put("finishDate", formatter.format(oneSecClass.getFinishDate()));
+			temp.put("type", oneSecClass.getType());
+			temp.put("startTime",oneSecClass.getStartTime());
+			temp.put("finishTime", oneSecClass.getFinishTime());
+			temp.put("day", oneSecClass.getDay());
 			sectClassrooms.add(temp);
 		}
 		return sectClassrooms;

@@ -1,6 +1,5 @@
 package com.araproje.OgrenciBilgiSistemi.service;
 
-import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +16,8 @@ public class SectionClassroomService {
 	@Autowired
 	SectionClassroomRepository sectionClassroomRepository;
 	
-	public void create(Section section, Classroom classroom, Date startDate, Date finishDate) {
-		sectionClassroomRepository.save(new SectionClassroom(section, classroom, startDate, finishDate));
+	public void create(Section section, Classroom classroom, String type, String startDate, String finishDate, String day) {
+		sectionClassroomRepository.save(new SectionClassroom(section, classroom, type, startDate, finishDate, day));
 	}
 	
 	public void delete(Integer id) {

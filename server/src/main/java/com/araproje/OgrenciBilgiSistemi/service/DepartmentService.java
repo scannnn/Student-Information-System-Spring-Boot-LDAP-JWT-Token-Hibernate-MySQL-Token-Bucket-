@@ -1,12 +1,7 @@
 package com.araproje.OgrenciBilgiSistemi.service;
 
-import java.beans.FeatureDescriptor;
 import java.util.List;
-import java.util.stream.Stream;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +21,6 @@ public class DepartmentService {
 	public void update(Department department, Integer id) {
 		department.setId(id);
 		departmentRepository.save(department);
-	}
-	
-	public void updateParticial(Department department, Integer id) {
-		Department persistedDepartment = departmentRepository.findById(id).get();
-		   String[] ignoredProperties = getNullPropertyNames(department);
-		   BeanUtils.copyProperties(department, persistedDepartment, ignoredProperties);
-		   departmentRepository.save(department);
 	}
 
 	public void delete(Integer id) {
@@ -59,11 +47,4 @@ public class DepartmentService {
 		return departmentRepository.existsById(id);
 	}
 	
-	private String[] getNullPropertyNames(Department department) {
-		   final BeanWrapper wrappedSource = new BeanWrapperImpl(department);
-		   return Stream.of(wrappedSource.getPropertyDescriptors())
-		            .map(FeatureDescriptor::getName)
-		            .filter(propertyName -> wrappedSource.getPropertyValue(propertyName) == null)
-		            .toArray(String[]::new);
-		}
 }
