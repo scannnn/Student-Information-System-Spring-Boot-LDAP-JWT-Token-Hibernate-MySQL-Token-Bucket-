@@ -52,7 +52,7 @@ public class SectionRestController {
 						(Date)sourceFormat.parse((String)JSON.get("finishDate")));
 				
 				for(Map<String, String> oneSectionDay : sectionDays) {
-					sectionClassroomService.create(sectionService.get((String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
+					sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
 							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
 							oneSectionDay.get("day"));
 				}

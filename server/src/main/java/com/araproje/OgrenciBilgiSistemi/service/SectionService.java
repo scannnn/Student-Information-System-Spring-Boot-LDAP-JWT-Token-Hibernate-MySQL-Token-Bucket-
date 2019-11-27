@@ -34,8 +34,8 @@ public class SectionService {
 		sectionRepository.deleteById(id);
 	}
 	
-	public Section get(String sectionCode) {
-		return sectionRepository.findBySectionCode(sectionCode);
+	public Section get(Course course, String sectionCode) {
+		return sectionRepository.findByCourseAndSectionCode(course, sectionCode);
 	}
 	
 	public Section get(Integer id) {
