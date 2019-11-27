@@ -69,7 +69,8 @@ public class Classroom {
 	}
 
 	public Set<SectionClassroom> getSectionClassrooms() {
-		return sectionClassrooms;
+		// EĞER SECTION CLASSROOM İCİNDE DE CEKMEK İSTİYORSAN SECTION İCERİSİNDEKİ GETSECTION İLE AYNI YAP
+		return null;
 	}
 
 	public void setSectionClassrooms(Set<SectionClassroom> sectionClassrooms) {

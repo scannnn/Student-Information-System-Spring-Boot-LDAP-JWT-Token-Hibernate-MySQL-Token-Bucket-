@@ -10,9 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 @Entity
 @Table(name = "section_classroom")
 public class SectionClassroom {
@@ -24,12 +21,10 @@ public class SectionClassroom {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "section_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Section section;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "classroom_id")
-	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Classroom classroom;
 	
 	@Column(name = "type")

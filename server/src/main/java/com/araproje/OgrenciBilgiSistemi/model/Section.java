@@ -55,6 +55,7 @@ public class Section {
 	private Date finishDate;
 	
 	@OneToMany(mappedBy = "section")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<SectionClassroom> sectionClassrooms = new HashSet<SectionClassroom>();
 	
 	@OneToMany(mappedBy = "section")
