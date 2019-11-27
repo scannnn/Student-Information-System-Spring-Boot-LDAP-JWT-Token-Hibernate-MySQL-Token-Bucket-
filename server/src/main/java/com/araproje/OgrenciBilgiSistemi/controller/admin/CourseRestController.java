@@ -49,7 +49,7 @@ public class CourseRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body("Added.");
+				.body(courseService.get((String)JSON.get("courseCode")));
 	}
 	
 	@DeleteMapping("/{id}")
@@ -116,6 +116,6 @@ public class CourseRestController {
 					.body(e.getMessage());
 		}
 		return ResponseEntity
-				.status(HttpStatus.ACCEPTED).body("Updated.");
+				.status(HttpStatus.ACCEPTED).body((String)JSON.get("courseCode"));
 	}
 }

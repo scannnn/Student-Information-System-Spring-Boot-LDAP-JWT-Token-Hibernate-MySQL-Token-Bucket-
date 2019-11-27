@@ -1,5 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,16 @@ public class ClassroomService {
 		return classroomRepository.findByClassroomCode(classroomCode);
 	}
 	
+	public List<Classroom> getAll(Department department){
+		List<Classroom> classrooms = (List<Classroom>)classroomRepository.findAll();
+		List<Classroom> classroomsWithGivenDept = new ArrayList<>();
+		for(Classroom c : classrooms) {
+			if(c.getDepartment().getId() == department.getId()) {
+				classroomsWithGivenDept.add(c);
+			}
+		}
+		return classroomsWithGivenDept;
+	}
 	public Classroom get(Integer id) {
 		return classroomRepository.findById(id).get();
 	}

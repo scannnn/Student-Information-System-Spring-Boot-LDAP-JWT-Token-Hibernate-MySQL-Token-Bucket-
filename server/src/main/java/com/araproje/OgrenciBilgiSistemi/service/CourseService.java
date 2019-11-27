@@ -1,5 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,23 @@ public class CourseService {
 		return courseRepository.findByCourseCode(courseCode);
 	}
 	
+	public Course getWithTitle(String title) {
+		return courseRepository.findByTitle(title);
+	}
+	
 	public Course get(Integer id) {
 		return courseRepository.findById(id).get();
+	}
+	
+	public List<Course> getAll(Department department) {
+		List<Course> courses = (List<Course>)courseRepository.findAll();
+		List<Course> coursesWithGivenDept = new ArrayList<>();
+		for(Course c : courses) {
+			if(c.getDepartment().getId() == department.getId()) {
+				coursesWithGivenDept.add(c);
+			}
+		}
+		return coursesWithGivenDept;
 	}
 	
 	public List<Course> getAll(){

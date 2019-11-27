@@ -31,6 +31,10 @@ public class DepartmentService {
 		return departmentRepository.findById(id).get();
 	}
 	
+	public Department getWithTitle(String title) {
+		return departmentRepository.findByTitle(title);
+	}
+	
 	public void delete(String departmentCode) {
 		departmentRepository.deleteById(departmentRepository.findByDepartmentCode(departmentCode).getId());
 	}

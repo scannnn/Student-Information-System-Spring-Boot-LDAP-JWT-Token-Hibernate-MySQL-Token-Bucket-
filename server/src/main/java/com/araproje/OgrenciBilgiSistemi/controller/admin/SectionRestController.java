@@ -70,7 +70,7 @@ public class SectionRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body("Added.");
+				.body(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")));
 	}
 	
 	@DeleteMapping("/{id}")
