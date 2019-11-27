@@ -28,9 +28,9 @@ public class DepartmentRestController {
 	@Autowired
 	DepartmentService departmentService;
 	@Autowired
-	CourseService courseService;
-	@Autowired
 	ClassroomService classroomService;
+	@Autowired
+	CourseService courseService;
 	
 	@PostMapping
 	public ResponseEntity<?> add(@RequestBody Department department){
@@ -77,6 +77,23 @@ public class DepartmentRestController {
 				.status(HttpStatus.OK).body(departments);
 	}
 	
+	@GetMapping("/{code}/courses")
+	public ResponseEntity<?> getCourses(@PathVariable String code){
+		Department department;
+		List<Course> coursesWithDept;
+		try {
+			 department = departmentService.get(code);
+			 coursesWithDept = courseService.getAll(department);
+		}
+		catch(Exception e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body(e.getMessage());
+		}
+		return ResponseEntity
+				.status(HttpStatus.OK).body(coursesWithDept);
+	}
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<?> getOne(@PathVariable String id){
 		Department department;
@@ -92,29 +109,12 @@ public class DepartmentRestController {
 				.status(HttpStatus.OK).body(department);
 	}
 	
-	@GetMapping("/{id}/courses")
-	public ResponseEntity<?> getCourses(@PathVariable String id){
-		Department department;
-		List<Course> coursesWithDept;
-		try {
-			 department = departmentService.get(Integer.parseInt(id));
-			 coursesWithDept = courseService.getAll(department);
-		}
-		catch(Exception e) {
-			return ResponseEntity
-					.status(HttpStatus.BAD_REQUEST)
-					.body(e.getMessage());
-		}
-		return ResponseEntity
-				.status(HttpStatus.OK).body(coursesWithDept);
-	}
-	
-	@GetMapping("/{id}/classrooms")
-	public ResponseEntity<?> getClassrooms(@PathVariable String id){
+	@GetMapping("/{code}/classrooms")
+	public ResponseEntity<?> getClassrooms(@PathVariable String code){
 		Department department;
 		List<Classroom> classroomsWithDept;
 		try {
-			 department = departmentService.get(Integer.parseInt(id));
+			 department = departmentService.get(code);
 			 classroomsWithDept = classroomService.getAll(department);
 		}
 		catch(Exception e) {

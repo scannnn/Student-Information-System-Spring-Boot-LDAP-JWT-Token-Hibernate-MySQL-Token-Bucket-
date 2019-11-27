@@ -1,5 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,20 @@ public class SectionClassroomService {
 	
 	public void delete(Section section, Classroom classroom) {
 		sectionClassroomRepository.delete(sectionClassroomRepository.findBySectionAndClassroom(section, classroom));
+	}
+	
+	public void deleteAllWithGivenSection(Section section) {
+		List<SectionClassroom> sectionClassrooms = (List<SectionClassroom>)sectionClassroomRepository.findAll();
+		List<SectionClassroom> sectionClassroomsWithGivenSection = new ArrayList<>();
+		for(SectionClassroom sc : sectionClassrooms) {
+			if(sc.getSection().getId() == section.getId()) {
+				sectionClassroomsWithGivenSection.add(sc);
+			}
+		}
+		
+		for(SectionClassroom sc : sectionClassroomsWithGivenSection) {
+			sectionClassroomRepository.delete(sc);
+		}
 	}
 	
 	public void update(SectionClassroom sectionClassroom) {

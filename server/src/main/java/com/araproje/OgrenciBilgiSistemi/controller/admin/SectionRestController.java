@@ -76,6 +76,7 @@ public class SectionRestController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
+			sectionClassroomService.deleteAllWithGivenSection(sectionService.get(Integer.parseInt(id)));
 			sectionService.delete(Integer.parseInt(id));
 		}
 		catch (Exception e) {
