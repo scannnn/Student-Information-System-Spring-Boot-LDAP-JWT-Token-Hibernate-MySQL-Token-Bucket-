@@ -41,7 +41,6 @@ public class Course {
 	@Column(name = "language")
 	private String language;
 	
-	// FETCH TYPE LAZY İLE EAGER FARKINA BAK ONA GÖRE DEĞİŞTİR TEKRARDAN, JSON DÖNDÜRÜRKEN HATA CIKIYORDU
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -102,20 +101,28 @@ public class Course {
 		}
 		return prereqs;
 	}
-
+	
 	public void setPrerequisites(List<Course> prerequisites) {
 		this.prerequisites = prerequisites;
 	}
 
 	public List<Map<String, String>> getWhosprerequisites() {
-		List<Map<String, String>> whosprereqs = new ArrayList<>();
-		for(Course oneCourse : whosprerequisites) {
-			Map<String, String> temp = new HashMap<>();
-			temp.put("courseCode", oneCourse.getCourseCode());
-			temp.put("title", oneCourse.getTitle());
-			whosprereqs.add(temp);
+		List<Map<String, String>> whosprereqs;
+		if(whosprerequisites != null) {
+			whosprereqs = new ArrayList<>();
+			for(Course oneCourse : whosprerequisites) {
+				Map<String, String> temp = new HashMap<>();
+				temp.put("courseCode", oneCourse.getCourseCode());
+				temp.put("title", oneCourse.getTitle());
+				whosprereqs.add(temp);
+			}
+			return whosprereqs;
 		}
-		return whosprereqs;
+		else {
+			whosprereqs = null;
+			return whosprereqs;
+		}
+		
 	}
 
 	public void setWhosprerequisites(List<Course> whosprerequisites) {

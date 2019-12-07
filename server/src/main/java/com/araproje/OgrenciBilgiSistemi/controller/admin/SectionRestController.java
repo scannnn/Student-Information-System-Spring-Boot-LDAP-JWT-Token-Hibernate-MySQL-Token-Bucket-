@@ -17,12 +17,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.araproje.OgrenciBilgiSistemi.model.Course;
 import com.araproje.OgrenciBilgiSistemi.model.Section;
 import com.araproje.OgrenciBilgiSistemi.service.ClassroomService;
 import com.araproje.OgrenciBilgiSistemi.service.CourseService;
 import com.araproje.OgrenciBilgiSistemi.service.InstructorService;
 import com.araproje.OgrenciBilgiSistemi.service.SectionClassroomService;
 import com.araproje.OgrenciBilgiSistemi.service.SectionService;
+import com.araproje.OgrenciBilgiSistemi.util.ValidateMethods;
 
 @SuppressWarnings("unchecked")
 @RestController
@@ -39,15 +41,20 @@ public class SectionRestController {
 	InstructorService instructorService;
 	@Autowired
 	SectionClassroomService sectionClassroomService;
+	@Autowired
+	ValidateMethods validateMethods;
 	DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
 	
 	@PostMapping
 	public ResponseEntity<?> add(@RequestBody Map<String, Object> JSON){
+		Course course;
+		List<Map<String, String>> sectionDays;
 		try {
-			List<Map<String, String>> sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
-			if(sectionDays != null) {
-				sectionService.create((String)JSON.get("sectionCode"), courseService.get((String)JSON.get("courseCode")), 
+			sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
+			course = courseService.get((String)JSON.get("courseCode"));
+			if(validateMethods.validateSection(JSON)) {
+				sectionService.create((String)JSON.get("sectionCode"), course, 
 						instructorService.get((String)JSON.get("instructorCode")), (Date)sourceFormat.parse((String)JSON.get("startDate")), 
 						(Date)sourceFormat.parse((String)JSON.get("finishDate")));
 				
@@ -56,13 +63,7 @@ public class SectionRestController {
 							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
 							oneSectionDay.get("day"));
 				}
-			}
-			else {
-				return ResponseEntity
-						.status(HttpStatus.BAD_REQUEST)
-						.body("sectionDays is empty.");
-			}
-			
+			}		
 		}catch (Exception e) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)

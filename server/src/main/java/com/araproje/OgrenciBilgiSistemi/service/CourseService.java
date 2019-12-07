@@ -64,4 +64,9 @@ public class CourseService {
 	public boolean isExist(Integer id) {
 		return courseRepository.existsById(id);
 	}
+	
+	public boolean isExist(String courseCode) {
+		if(courseRepository.findByCourseCode(courseCode) == null) return false;
+		else return true;
+	}
 }

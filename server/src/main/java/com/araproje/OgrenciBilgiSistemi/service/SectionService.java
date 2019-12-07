@@ -49,4 +49,9 @@ public class SectionService {
 	public boolean isExist(Integer id) {
 		return sectionRepository.existsById(id);
 	}
+	
+	public boolean isExist(Course course, String sectionCode) {
+		if(sectionRepository.findByCourseAndSectionCode(course, sectionCode) == null) return false;
+		else return true;
+	}
 }
