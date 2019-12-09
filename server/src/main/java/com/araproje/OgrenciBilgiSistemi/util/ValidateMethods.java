@@ -84,4 +84,63 @@ public class ValidateMethods {
 		}
 		return true;
 	}
+	
+	@SuppressWarnings("unchecked")
+	public boolean validateSectionUpdate(String id, Map<String, Object> JSON) throws Exception {
+		try {
+			List<Map<String, String>> sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
+			if(sectionDays != null) {
+				if(sectionService.isExist(Integer.parseInt(id))) {
+					List<SectionClassroom> sectionClassrooms = sectionClassroomService.getAll();
+					
+					for(SectionClassroom SC : sectionClassrooms) {
+						if(SC.getSection().getId() == Integer.parseInt(id)) {
+							sectionClassrooms.remove(SC);
+						}
+					}
+					
+					for(Map<String, String> oneSectionDay : sectionDays) {
+						Integer startTime = Integer.parseInt(oneSectionDay.get("startDate").split(":")[0]);
+						Integer finishTime = Integer.parseInt(oneSectionDay.get("finishDate").split(":")[0]);
+						
+						for(SectionClassroom oneSectionClassroom : sectionClassrooms) {
+							
+							if( (oneSectionClassroom.getClassroom().getClassroomCode().equalsIgnoreCase(oneSectionDay.get("classroomCode"))) && 
+									(oneSectionClassroom.getDay().equalsIgnoreCase(oneSectionDay.get("day"))) ) {
+								Integer startTimeTemp = Integer.parseInt(oneSectionClassroom.getStartTime().split(":")[0]);
+								Integer finishTimeTemp = Integer.parseInt(oneSectionClassroom.getFinishTime().split(":")[0]);
+								
+								if( ( (startTimeTemp>=startTime)&&(startTimeTemp<finishTime) ) ||
+										( (finishTimeTemp>startTime)&&(finishTimeTemp<=finishTime) ) ){
+									throw new Exception("Gruba ders eklemeye çalıştığınız "+oneSectionDay.get("classroomCode")+" sınıfında aynı saat araklıklarına zaten farklı bir ders mevcut. "
+											+ "Bu ders: "+oneSectionClassroom.getSection().getCourse().getCourseCode()+ " "+oneSectionClassroom.getSection().getSectionCode()
+											+ " "+oneSectionClassroom.getDay()+" günü"+" Başlangıç Saati: "+oneSectionClassroom.getStartTime()+" Bitiş Saati: "+oneSectionClassroom.getFinishTime());
+								}
+							}
+							
+							if((oneSectionClassroom.getSection().getInstructor().getInstructorCode().equalsIgnoreCase((String)JSON.get("instructorCode"))) && 
+									(oneSectionClassroom.getDay().equalsIgnoreCase(oneSectionDay.get("day"))) ) {
+								Integer startTimeTemp = Integer.parseInt(oneSectionClassroom.getStartTime().split(":")[0]);
+								Integer finishTimeTemp = Integer.parseInt(oneSectionClassroom.getFinishTime().split(":")[0]);
+								if( ( (startTimeTemp>=startTime)&&(startTimeTemp<finishTime) ) ||
+										( (finishTimeTemp>startTime)&&(finishTimeTemp<=finishTime) ) ){
+									throw new Exception("Gruba ders eklemeye çalıştığınız ders "+oneSectionDay.get("startDate")+"-"+oneSectionDay.get("finishDate")+" aralıklarında"
+											+ " eklenememektedir. Nedeni ise eklemeye çalıştığınız öğretmenin "+oneSectionClassroom.getSection().getCourse().getCourseCode()
+											+ " "+oneSectionClassroom.getSection().getSectionCode()+" dersinde "+oneSectionClassroom.getDay()+" günü "+oneSectionClassroom.getStartTime()+"-"
+											+ oneSectionClassroom.getFinishTime()+" aralıklarında başka bir dersi bulunmasıdır.");
+								}
+							}
+						}
+					}
+					
+				}
+				else throw new Exception("Eklemeye çalıştığınız dersin grubu bulunmamaktadır.");
+			}
+			else throw new Exception("Grubun açılabilmesi için en azından 1 güne ders eklemeniz gerekmektedir.");
+		}
+		catch (Exception e) {
+			throw new Exception(e.getMessage());
+		}
+		return true;
+	}
 }

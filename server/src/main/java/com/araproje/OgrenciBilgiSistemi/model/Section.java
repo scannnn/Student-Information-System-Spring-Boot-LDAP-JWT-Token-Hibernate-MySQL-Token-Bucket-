@@ -1,7 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -18,8 +17,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -46,13 +43,11 @@ public class Section {
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Instructor instructor;
 	
-	@Column(name = "startDate", nullable = false, updatable = true)
-	@Temporal(TemporalType.DATE)
-	private Date startDate;
+	@Column(name = "year", nullable = false, updatable = true)
+	private String year;
 	
-	@Column(name = "finishDate", nullable = false, updatable = true)
-	@Temporal(TemporalType.DATE)
-	private Date finishDate;
+	@Column(name = "term", nullable = false, updatable = true)
+	private String term;
 	
 	@OneToMany(mappedBy = "section")
 	@OnDelete(action = OnDeleteAction.CASCADE)
@@ -63,29 +58,29 @@ public class Section {
 
 	public Section() {}
 
-	public Section(String sectionCode, Course course, Instructor instructor, Date startDate, Date finishDate) {
+	public Section(String sectionCode, Course course, Instructor instructor, String year, String term) {
 		super();
 		this.sectionCode = sectionCode;
 		this.course = course;
 		this.instructor = instructor;
-		this.startDate = startDate;
-		this.finishDate = finishDate;
+		this.year = year;
+		this.term = term;
 	}
 
-	public Date getStartDate() {
-		return startDate;
+	public String getYear() {
+		return year;
 	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	
+	public void setYear(String year) {
+		this.year = year;
 	}
-
-	public Date getFinishDate() {
-		return finishDate;
+	
+	public String getTerm() {
+		return term;
 	}
-
-	public void setFinishDate(Date finishDate) {
-		this.finishDate = finishDate;
+	
+	public void setTerm(String term) {
+		this.term = term;
 	}
 
 	public int getId() {

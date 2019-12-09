@@ -2,7 +2,6 @@ package com.araproje.OgrenciBilgiSistemi.controller.admin;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -55,8 +55,8 @@ public class SectionRestController {
 			course = courseService.get((String)JSON.get("courseCode"));
 			if(validateMethods.validateSection(JSON)) {
 				sectionService.create((String)JSON.get("sectionCode"), course, 
-						instructorService.get((String)JSON.get("instructorCode")), (Date)sourceFormat.parse((String)JSON.get("startDate")), 
-						(Date)sourceFormat.parse((String)JSON.get("finishDate")));
+						instructorService.get((String)JSON.get("instructorCode")), (String)JSON.get("year"), 
+						(String)JSON.get("term"));
 				
 				for(Map<String, String> oneSectionDay : sectionDays) {
 					sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
@@ -122,16 +122,27 @@ public class SectionRestController {
 				.body(section);
 	}
 	
-	// YUKARIDAKİ ADD METODUNA BAKARAK SECTION CLASSLARI 0 LAYIP DEGİSTİREREK PUT MAPPING I YAZ
-	/*@PutMapping("/{id}")
+	@PutMapping("/{id}")
 	public ResponseEntity<?> updateAllFields(@PathVariable String id, @RequestBody Map<String, Object> JSON){
+		Course course;
+		List<Map<String, String>> sectionDays;
 		try {
-			if(sectionService.isExist(Integer.parseInt(id))) {
-				sectionService.create((String)JSON.get("sectionCode"), courseService.get((String)JSON.get("courseCode")), 
-						instructorService.get((String)JSON.get("instructorCode")), (Date)sourceFormat.parse((String)JSON.get("startDate")), 
-						(Date)sourceFormat.parse((String)JSON.get("finishDate")));
-			
-			}
+				if(validateMethods.validateSectionUpdate(id, JSON)) {
+					sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
+					course = courseService.get((String)JSON.get("courseCode"));
+					
+					sectionService.delete(Integer.parseInt(id));
+					
+					sectionService.create((String)JSON.get("sectionCode"), course, 
+							instructorService.get((String)JSON.get("instructorCode")), (String)JSON.get("year"), 
+							(String)JSON.get("term"));
+					
+					for(Map<String, String> oneSectionDay : sectionDays) {
+						sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
+								oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+								oneSectionDay.get("day"));
+					}
+				}
 		}
 		catch (Exception e) {
 			return ResponseEntity
@@ -141,5 +152,7 @@ public class SectionRestController {
 		return ResponseEntity
 				.status(HttpStatus.ACCEPTED)
 				.body("Updated.");
-	}*/
+	}
+	
 }
+

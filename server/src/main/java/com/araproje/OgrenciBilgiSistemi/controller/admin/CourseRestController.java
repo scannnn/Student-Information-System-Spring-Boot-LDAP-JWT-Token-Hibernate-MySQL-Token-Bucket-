@@ -45,7 +45,7 @@ public class CourseRestController {
 				}
 				courseService.create(course_code, (String)JSON.get("title"),
 						departmentService.get((String)JSON.get("departmentCode")),
-						Integer.parseInt((String)JSON.get("credit")), (String)JSON.get("language"), prerequisites);
+						(int)JSON.get("credit"), (String)JSON.get("language"), prerequisites);
 				c = courseService.get(course_code);
 				System.out.println(c.getCourseCode());
 			}
@@ -122,7 +122,7 @@ public class CourseRestController {
 				}
 				c = new Course((String)JSON.get("courseCode"), (String)JSON.get("title"),
 						departmentService.get((String)JSON.get("departmentCode")),
-						Integer.parseInt((String)JSON.get("credit")), (String)JSON.get("language"), prerequisities);
+						(int)JSON.get("credit"), (String)JSON.get("language"), prerequisities);
 				courseService.update(c, Integer.parseInt(id));
 			}
 		}
