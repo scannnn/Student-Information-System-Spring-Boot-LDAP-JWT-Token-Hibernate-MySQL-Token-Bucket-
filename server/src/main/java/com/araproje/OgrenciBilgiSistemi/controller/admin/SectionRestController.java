@@ -2,8 +2,11 @@ package com.araproje.OgrenciBilgiSistemi.controller.admin;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.araproje.OgrenciBilgiSistemi.model.Course;
 import com.araproje.OgrenciBilgiSistemi.model.Section;
+import com.araproje.OgrenciBilgiSistemi.model.SectionClassroom;
 import com.araproje.OgrenciBilgiSistemi.service.ClassroomService;
 import com.araproje.OgrenciBilgiSistemi.service.CourseService;
 import com.araproje.OgrenciBilgiSistemi.service.InstructorService;
@@ -50,7 +54,7 @@ public class SectionRestController {
 	public ResponseEntity<?> add(@RequestBody Map<String, Object> JSON){
 		Course course;
 		Section section;
-		Object trick;
+		Set<SectionClassroom> sClasrooms = new HashSet<>();
 		List<Map<String, String>> sectionDays;
 		try {
 			sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
@@ -64,10 +68,13 @@ public class SectionRestController {
 					sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
 							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
 							oneSectionDay.get("day"));
+					sClasrooms.add(new SectionClassroom(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
+							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+							oneSectionDay.get("day")));
 				}
 			}
 			section = sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode"));
-			trick = section.getSectionClassrooms();
+			section.setSectionClassrooms(sClasrooms);
 		}catch (Exception e) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
@@ -131,10 +138,8 @@ public class SectionRestController {
 		Course course;
 		List<Map<String, String>> sectionDays;
 		Section section;
-		Object trick;
-		System.out.println("girdi 0");
+		Set<SectionClassroom> sClasrooms = new HashSet<>();
 		try {
-				System.out.println("girdi 1");
 				if(validateMethods.validateSectionUpdate(id, JSON)) {
 					sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
 					course = courseService.get((String)JSON.get("courseCode"));
@@ -149,10 +154,13 @@ public class SectionRestController {
 						sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
 								oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
 								oneSectionDay.get("day"));
+						sClasrooms.add(new SectionClassroom(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
+								oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+								oneSectionDay.get("day")));
 					}
 				}
 				section = sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode"));
-				trick = section.getSectionClassrooms();
+				section.setSectionClassrooms(sClasrooms);
 		
 		}
 		catch (Exception e) {
