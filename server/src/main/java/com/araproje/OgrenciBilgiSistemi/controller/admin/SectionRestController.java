@@ -132,7 +132,9 @@ public class SectionRestController {
 		List<Map<String, String>> sectionDays;
 		Section section;
 		Object trick;
+		System.out.println("girdi 0");
 		try {
+				System.out.println("girdi 1");
 				if(validateMethods.validateSectionUpdate(id, JSON)) {
 					sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
 					course = courseService.get((String)JSON.get("courseCode"));
@@ -154,6 +156,7 @@ public class SectionRestController {
 		
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.body(e.getMessage());

@@ -88,17 +88,23 @@ public class ValidateMethods {
 	@SuppressWarnings("unchecked")
 	public boolean validateSectionUpdate(String id, Map<String, Object> JSON) throws Exception {
 		try {
+			System.out.println("girdi 2");
 			List<Map<String, String>> sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
+			System.out.println("girdi 2.1");
 			if(sectionDays != null) {
 				if(sectionService.isExist(Integer.parseInt(id))) {
 					List<SectionClassroom> sectionClassrooms = sectionClassroomService.getAll();
-					
-					for(SectionClassroom SC : sectionClassrooms) {
+					List<SectionClassroom> sectionClassroomsTemp = sectionClassrooms;
+					System.out.println("girdi 3");
+					for(SectionClassroom SC : sectionClassroomsTemp) {
+						System.out.println("girdi 3.1");
 						if(SC.getSection().getId() == Integer.parseInt(id)) {
+							System.out.println("sectionID = "+id+" SC ID = "+SC.getSection().getId());
 							sectionClassrooms.remove(SC);
+							System.out.println("girdi 3.2");
 						}
 					}
-					
+					System.out.println("girdi 4");
 					for(Map<String, String> oneSectionDay : sectionDays) {
 						Integer startTime = Integer.parseInt(oneSectionDay.get("startDate").split(":")[0]);
 						Integer finishTime = Integer.parseInt(oneSectionDay.get("finishDate").split(":")[0]);
@@ -132,6 +138,7 @@ public class ValidateMethods {
 							}
 						}
 					}
+					System.out.println("girdi 5");
 					
 				}
 				else throw new Exception("Eklemeye çalıştığınız dersin grubu bulunmamaktadır.");
