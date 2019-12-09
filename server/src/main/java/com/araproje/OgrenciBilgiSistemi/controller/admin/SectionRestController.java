@@ -49,6 +49,8 @@ public class SectionRestController {
 	@PostMapping
 	public ResponseEntity<?> add(@RequestBody Map<String, Object> JSON){
 		Course course;
+		Section section;
+		Object trick;
 		List<Map<String, String>> sectionDays;
 		try {
 			sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
@@ -63,7 +65,9 @@ public class SectionRestController {
 							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
 							oneSectionDay.get("day"));
 				}
-			}		
+			}
+			section = sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode"));
+			trick = section.getSectionClassrooms();
 		}catch (Exception e) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
@@ -71,7 +75,7 @@ public class SectionRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")));
+				.body(section);
 	}
 	
 	@DeleteMapping("/{id}")
@@ -126,6 +130,8 @@ public class SectionRestController {
 	public ResponseEntity<?> updateAllFields(@PathVariable String id, @RequestBody Map<String, Object> JSON){
 		Course course;
 		List<Map<String, String>> sectionDays;
+		Section section;
+		Object trick;
 		try {
 				if(validateMethods.validateSectionUpdate(id, JSON)) {
 					sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
@@ -143,6 +149,9 @@ public class SectionRestController {
 								oneSectionDay.get("day"));
 					}
 				}
+				section = sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode"));
+				trick = section.getSectionClassrooms();
+		
 		}
 		catch (Exception e) {
 			return ResponseEntity
@@ -151,7 +160,7 @@ public class SectionRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.ACCEPTED)
-				.body("Updated.");
+				.body(section);
 	}
 	
 }
