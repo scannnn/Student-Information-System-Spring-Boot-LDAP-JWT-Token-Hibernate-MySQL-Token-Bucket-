@@ -1,5 +1,8 @@
 package com.araproje.OgrenciBilgiSistemi.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +17,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.araproje.OgrenciBilgiSistemi.model.Instructor;
+import com.araproje.OgrenciBilgiSistemi.model.Student;
 import com.araproje.OgrenciBilgiSistemi.payload.ApiResponse;
-import com.araproje.OgrenciBilgiSistemi.payload.JwtAuthenticationResponse;
 import com.araproje.OgrenciBilgiSistemi.payload.LoginRequest;
 import com.araproje.OgrenciBilgiSistemi.security.JwtTokenProvider;
+import com.araproje.OgrenciBilgiSistemi.service.StudentService;
 import com.araproje.OgrenciBilgiSistemi.util.MessageConstants;
 
 import io.jsonwebtoken.Claims;
@@ -33,6 +38,8 @@ public class AuthenticationController {
 	private AuthenticationManager authenticationManager;
 	@Autowired
 	private JwtTokenProvider jwtTokenProvider;
+	@Autowired
+	StudentService studentService;
 	
 	@PostMapping("/generatetoken")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
@@ -49,14 +56,27 @@ public class AuthenticationController {
         );
 		
 		Claims claim = jwtTokenProvider.generateToken(authentication);
+		String token = Jwts.builder().setClaims(claim).signWith(SignatureAlgorithm.HS512, "usis").compact();
+		Map<String, Object> jo = new HashMap<>();
+		jo.put("accessToken", token);
+		jo.put("expiresInMillis", claim.getExpiration().getTime());
+		if(jwtTokenProvider.getUserFromJWT(token).getRole().equalsIgnoreCase("Student")) {
+			Student student = studentService.get(loginRequest.getUsername());
+			System.out.println(student.toString());
+			jo.put("user", student);
+			jo.put("role", jwtTokenProvider.getUserFromJWT(token).getRole());
+		}
+		else if(jwtTokenProvider.getUserFromJWT(token).getRole().equalsIgnoreCase("Instructor")) {
+			Instructor instructor = null;
+			jo.put("user", instructor);
+			jo.put("role",jwtTokenProvider.getUserFromJWT(token).getRole());
+		}
+		else {
+			jo.put("user", "ADMINISTRATOR");
+			jo.put("role", jwtTokenProvider.getUserFromJWT(token).getRole());
+		}
 		
-		JwtAuthenticationResponse jwtResponse = new JwtAuthenticationResponse();
-		jwtResponse.setExpiresInMillis(claim.getExpiration().getTime());
-		jwtResponse.setAccessToken(Jwts.builder()
-										.setClaims(claim)
-										.signWith(SignatureAlgorithm.HS512, "usis")
-										.compact());
-		return ResponseEntity.ok(jwtResponse);
+		return ResponseEntity.ok(jo);
 	}
 	
 	@PostMapping("/validatetoken")

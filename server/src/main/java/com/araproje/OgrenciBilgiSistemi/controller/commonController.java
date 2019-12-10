@@ -1,43 +1,38 @@
 package com.araproje.OgrenciBilgiSistemi.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.araproje.OgrenciBilgiSistemi.service.ClassroomService;
-import com.araproje.OgrenciBilgiSistemi.service.CourseService;
-import com.araproje.OgrenciBilgiSistemi.service.DepartmentService;
+import com.araproje.OgrenciBilgiSistemi.model.Section;
 import com.araproje.OgrenciBilgiSistemi.service.SectionService;
 
 @RestController
 @RequestMapping("/api/rest/common")
-public class commonController {
-
-	@Autowired
-	DepartmentService departmentService;
-	@Autowired
-	CourseService courseService;
-	@Autowired
-	ClassroomService classroomService;
+public class CommonController {
+	
 	@Autowired
 	SectionService sectionService;
 	
-	
-	
-	/*@GetMapping("/{id}/sections")
-	public ResponseEntity<?> getSections(@PathVariable String id){
-		Department department;
-		List<Section> sectionsWithDept;
+	@GetMapping("/sections/{year}/{term}")
+	public ResponseEntity<?> getByYearAndTerm(@PathVariable String year, @PathVariable String term){
+		List<Section> sections;
 		try {
-			 department = departmentService.get(Integer.parseInt(id));
-			 sectionsWithDept = sectionService.getAll(department);
+			sections = sectionService.getByYearAndTerm(year, term);
 		}
-		catch(Exception e) {
+		catch (Exception e) {
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.body(e.getMessage());
 		}
 		return ResponseEntity
-				.status(HttpStatus.OK).body(sectionsWithDept);
-	}*/
+				.status(HttpStatus.OK)
+				.body(sections);
+	}
 }

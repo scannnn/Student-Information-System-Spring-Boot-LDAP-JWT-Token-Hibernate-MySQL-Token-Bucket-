@@ -1,8 +1,8 @@
 package com.araproje.OgrenciBilgiSistemi.model;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,11 +19,11 @@ public class StudentSection {
 	@Column(name = "student_section_id")
 	private int id;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "student_id")
 	private Student student;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "section_id")
 	private Section section;
 	
@@ -45,7 +45,7 @@ public class StudentSection {
 	}
 
 	public Student getStudent() {
-		return student;
+		return null;
 	}
 
 	public void setStudent(Student student) {

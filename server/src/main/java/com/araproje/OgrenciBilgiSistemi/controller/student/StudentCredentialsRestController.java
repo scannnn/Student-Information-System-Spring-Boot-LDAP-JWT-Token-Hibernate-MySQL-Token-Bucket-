@@ -1,7 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.controller.student;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +12,8 @@ import com.araproje.OgrenciBilgiSistemi.model.Student;
 import com.araproje.OgrenciBilgiSistemi.service.StudentService;
 
 @RestController
-@RequestMapping("/api/rest/student")
-public class StudentRestController {
-
+@RequestMapping("/api/rest/student/credentials")
+public class StudentCredentialsRestController {
 	@Autowired
 	StudentService studentService;
 	

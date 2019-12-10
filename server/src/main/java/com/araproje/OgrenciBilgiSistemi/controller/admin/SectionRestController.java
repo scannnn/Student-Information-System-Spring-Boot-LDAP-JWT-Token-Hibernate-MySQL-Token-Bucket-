@@ -2,7 +2,6 @@ package com.araproje.OgrenciBilgiSistemi.controller.admin;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +27,7 @@ import com.araproje.OgrenciBilgiSistemi.service.CourseService;
 import com.araproje.OgrenciBilgiSistemi.service.InstructorService;
 import com.araproje.OgrenciBilgiSistemi.service.SectionClassroomService;
 import com.araproje.OgrenciBilgiSistemi.service.SectionService;
+import com.araproje.OgrenciBilgiSistemi.service.StudentSectionService;
 import com.araproje.OgrenciBilgiSistemi.util.ValidateMethods;
 
 @SuppressWarnings("unchecked")
@@ -46,6 +46,8 @@ public class SectionRestController {
 	@Autowired
 	SectionClassroomService sectionClassroomService;
 	@Autowired
+	StudentSectionService studentSectionService;
+	@Autowired
 	ValidateMethods validateMethods;
 	DateFormat sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -62,7 +64,7 @@ public class SectionRestController {
 			if(validateMethods.validateSection(JSON)) {
 				sectionService.create((String)JSON.get("sectionCode"), course, 
 						instructorService.get((String)JSON.get("instructorCode")), (String)JSON.get("year"), 
-						(String)JSON.get("term"));
+						(String)JSON.get("term"), (int)JSON.get("quota"));
 				
 				for(Map<String, String> oneSectionDay : sectionDays) {
 					sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
@@ -89,6 +91,7 @@ public class SectionRestController {
 	public ResponseEntity<?> delete(@PathVariable String id){
 		try {
 			sectionClassroomService.deleteAllWithGivenSection(sectionService.get(Integer.parseInt(id)));
+			studentSectionService.deleteAllWithGivenSection(sectionService.get(Integer.parseInt(id)));
 			sectionService.delete(Integer.parseInt(id));
 		}
 		catch (Exception e) {
@@ -148,7 +151,7 @@ public class SectionRestController {
 					
 					sectionService.create((String)JSON.get("sectionCode"), course, 
 							instructorService.get((String)JSON.get("instructorCode")), (String)JSON.get("year"), 
-							(String)JSON.get("term"));
+							(String)JSON.get("term"), (int)JSON.get("quota"));
 					
 					for(Map<String, String> oneSectionDay : sectionDays) {
 						sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 

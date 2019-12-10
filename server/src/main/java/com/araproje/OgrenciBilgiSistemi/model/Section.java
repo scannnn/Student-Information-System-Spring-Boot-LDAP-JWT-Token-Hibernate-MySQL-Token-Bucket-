@@ -21,6 +21,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name="sections")
 public class Section {
@@ -49,6 +51,12 @@ public class Section {
 	@Column(name = "term", nullable = false, updatable = true)
 	private String term;
 	
+	@Column(name = "quota", nullable = false, updatable = true)
+	private int quota;
+	
+	@Column(name = "studentCount", updatable = true)
+	private int studentCount;
+	
 	@OneToMany(mappedBy = "section")
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Set<SectionClassroom> sectionClassrooms = new HashSet<SectionClassroom>();
@@ -58,13 +66,15 @@ public class Section {
 
 	public Section() {}
 
-	public Section(String sectionCode, Course course, Instructor instructor, String year, String term) {
+	public Section(String sectionCode, Course course, Instructor instructor, String year, String term, Integer quota) {
 		super();
 		this.sectionCode = sectionCode;
 		this.course = course;
 		this.instructor = instructor;
 		this.year = year;
 		this.term = term;
+		this.quota = quota;
+		this.studentCount = 0;
 	}
 
 	public String getYear() {
@@ -130,17 +140,51 @@ public class Section {
 		}
 		return sectClassrooms;
 	}
-
+	
+	@JsonIgnore
+	public List<SectionClassroom> getSecClassrooms(){
+		List<SectionClassroom> sc = new ArrayList<>();
+		sc.addAll(sectionClassrooms);
+		return sc;
+	}
 	public void setSectionClassrooms(Set<SectionClassroom> sectionClassrooms) {
 		this.sectionClassrooms = sectionClassrooms;
 	}
 
 	public Set<StudentSection> getStudentSections() {
-		return studentSections;
+		return null;
 	}
 
 	public void setStudentSections(Set<StudentSection> studentSections) {
 		this.studentSections = studentSections;
 	}
+
+	public int getQuota() {
+		return quota;
+	}
+
+	public void setQuota(int quota) {
+		this.quota = quota;
+	}
+
+	public int getStudentCount() {
+		return studentCount;
+	}
+
+	public void setStudentCount(int studentCount) {
+		this.studentCount = studentCount;
+	}
 	
+	public void increaseStudentCount() {
+		studentCount++;
+	}
+	
+	public void decreaseStudentCount() {
+		studentCount--;
+	}
+	
+	public boolean isSectionFull() {
+		if(quota == studentCount) return true;
+		else return false;
+	}
 }

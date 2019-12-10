@@ -16,8 +16,8 @@ public class SectionService {
 	@Autowired
 	SectionRepository sectionRepository;
 	
-	public void create(String sectionCode, Course course, Instructor instructor, String year, String term) {
-		sectionRepository.save(new Section(sectionCode, course, instructor, year, term));
+	public void create(String sectionCode, Course course, Instructor instructor, String year, String term, Integer quota) {
+		sectionRepository.save(new Section(sectionCode, course, instructor, year, term, quota));
 	}
 	
 	public void update(Section section, Integer id) {
@@ -43,6 +43,10 @@ public class SectionService {
 	
 	public List<Section> getAll(){
 		return (List<Section>)sectionRepository.findAll();
+	}
+	
+	public List<Section> getByYearAndTerm(String year, String term){
+		return (List<Section>) sectionRepository.findAllSectionsByYearAndTerm(year, term);
 	}
 	
 	public boolean isExist(Integer id) {
