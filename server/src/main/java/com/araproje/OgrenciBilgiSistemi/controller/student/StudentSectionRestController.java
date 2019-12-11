@@ -118,4 +118,25 @@ public class StudentSectionRestController {
 				.status(HttpStatus.OK).body(sections);
 	}
 	
+	@GetMapping()
+	public ResponseEntity<?> getAll(HttpServletRequest request){
+		Student student;
+		List<Section> sections;
+		List<StudentSection> studentSections;
+		try {
+			student = studentService.get((String)request.getAttribute("uid"));
+			studentSections = studentSectionService.getAll(student);
+			sections = new ArrayList<>();
+			for(StudentSection ss : studentSections) {
+					sections.add(ss.getSection());
+			}
+		}
+		catch(Exception e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body(e.getMessage());
+		}
+		return ResponseEntity
+				.status(HttpStatus.OK).body(sections);
+	}
 }
