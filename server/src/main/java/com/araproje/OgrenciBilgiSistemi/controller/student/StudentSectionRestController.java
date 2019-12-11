@@ -70,7 +70,7 @@ public class StudentSectionRestController {
 		}
 		
 		return ResponseEntity
-				.status(HttpStatus.OK).body(studentSections);
+				.status(HttpStatus.OK).body(section);
 	}
 	
 	@DeleteMapping("/{sectionId}")
@@ -117,4 +117,5 @@ public class StudentSectionRestController {
 		return ResponseEntity
 				.status(HttpStatus.OK).body(sections);
 	}
+	
 }

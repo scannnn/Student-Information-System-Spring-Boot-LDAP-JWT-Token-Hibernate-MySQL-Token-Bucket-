@@ -37,7 +37,6 @@ public class CourseRestController {
 		try {
 			course_code = (String)JSON.get("courseCode");
 			if(!courseService.isExist(course_code)) {
-				System.out.println("girdi");
 				List<Course> prerequisites = new ArrayList<>();
 				List<String> prerequisitiesCodes = (List<String>) JSON.get("prerequisites");
 				for(String courseCode : prerequisitiesCodes) {
