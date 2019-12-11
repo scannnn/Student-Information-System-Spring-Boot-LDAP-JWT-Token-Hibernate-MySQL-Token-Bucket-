@@ -68,10 +68,10 @@ public class SectionRestController {
 				
 				for(Map<String, String> oneSectionDay : sectionDays) {
 					sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
-							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+							oneSectionDay.get("type"), oneSectionDay.get("startTime"), oneSectionDay.get("finishTime"), 
 							oneSectionDay.get("day"));
 					sClasrooms.add(new SectionClassroom(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
-							oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+							oneSectionDay.get("type"), oneSectionDay.get("startTime"), oneSectionDay.get("finishTime"), 
 							oneSectionDay.get("day")));
 				}
 			}
@@ -155,10 +155,10 @@ public class SectionRestController {
 					
 					for(Map<String, String> oneSectionDay : sectionDays) {
 						sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
-								oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+								oneSectionDay.get("type"), oneSectionDay.get("startTime"), oneSectionDay.get("finishTime"), 
 								oneSectionDay.get("day"));
 						sClasrooms.add(new SectionClassroom(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
-								oneSectionDay.get("type"), oneSectionDay.get("startDate"), oneSectionDay.get("finishDate"), 
+								oneSectionDay.get("type"), oneSectionDay.get("startTime"), oneSectionDay.get("finishTime"), 
 								oneSectionDay.get("day")));
 					}
 				}

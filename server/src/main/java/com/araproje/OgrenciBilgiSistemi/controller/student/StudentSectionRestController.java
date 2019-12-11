@@ -1,5 +1,6 @@
 package com.araproje.OgrenciBilgiSistemi.controller.student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -89,5 +91,30 @@ public class StudentSectionRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.OK).body("Deleted.");
+	}
+	
+	@GetMapping("/{year}/{term}")
+	public ResponseEntity<?> getAll(@PathVariable String year, @PathVariable String term, HttpServletRequest request){
+		Student student;
+		List<Section> sections;
+		List<StudentSection> studentSections;
+		try {
+			student = studentService.get((String)request.getAttribute("uid"));
+			studentSections = studentSectionService.getAll(student);
+			sections = new ArrayList<>();
+			for(StudentSection ss : studentSections) {
+				if(ss.getSection().getYear().equalsIgnoreCase(year) && 
+						ss.getSection().getYear().equalsIgnoreCase(year)) {
+					sections.add(ss.getSection());
+				}
+			}
+		}
+		catch(Exception e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body(e.getMessage());
+		}
+		return ResponseEntity
+				.status(HttpStatus.OK).body(sections);
 	}
 }

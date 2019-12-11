@@ -47,8 +47,8 @@ public class ValidateMethods {
 					List<SectionClassroom> sectionClassrooms = sectionClassroomService.getAll();
 					
 					for(Map<String, String> oneSectionDay : sectionDays) {
-						Integer startTime = Integer.parseInt(oneSectionDay.get("startDate").split(":")[0]);
-						Integer finishTime = Integer.parseInt(oneSectionDay.get("finishDate").split(":")[0]);
+						Integer startTime = Integer.parseInt(oneSectionDay.get("startTime").split(":")[0]);
+						Integer finishTime = Integer.parseInt(oneSectionDay.get("finishTime").split(":")[0]);
 						if(startTime == finishTime){
 							throw new Exception("Başlangıç ve bitiş saatleri aynı olamaz.");
 						}
@@ -78,7 +78,7 @@ public class ValidateMethods {
 									Integer finishTimeTemp = Integer.parseInt(oneSectionClassroom.getFinishTime().split(":")[0]);
 									if( ( (startTimeTemp>=startTime)&&(startTimeTemp<finishTime) ) ||
 											( (finishTimeTemp>startTime)&&(finishTimeTemp<=finishTime) ) ){
-										throw new Exception("Gruba ders eklemeye çalıştığınız ders "+oneSectionDay.get("startDate")+"-"+oneSectionDay.get("finishDate")+" aralıklarında"
+										throw new Exception("Gruba ders eklemeye çalıştığınız ders "+oneSectionDay.get("startTime")+"-"+oneSectionDay.get("finishTime")+" aralıklarında"
 												+ " eklenememektedir. Nedeni ise eklemeye çalıştığınız öğretmenin "+oneSectionClassroom.getSection().getCourse().getCourseCode()
 												+ " "+oneSectionClassroom.getSection().getSectionCode()+" dersinde "+oneSectionClassroom.getDay()+" günü "+oneSectionClassroom.getStartTime()+"-"
 												+ oneSectionClassroom.getFinishTime()+" aralıklarında başka bir dersi bulunmasıdır.");
@@ -116,8 +116,8 @@ public class ValidateMethods {
 					}
 					
 					for(Map<String, String> oneSectionDay : sectionDays) {
-						Integer startTime = Integer.parseInt(oneSectionDay.get("startDate").split(":")[0]);
-						Integer finishTime = Integer.parseInt(oneSectionDay.get("finishDate").split(":")[0]);
+						Integer startTime = Integer.parseInt(oneSectionDay.get("startTime").split(":")[0]);
+						Integer finishTime = Integer.parseInt(oneSectionDay.get("finishTime").split(":")[0]);
 						if(startTime == finishTime){
 							throw new Exception("Başlangıç ve bitiş saatleri aynı olamaz.");
 						}
@@ -147,7 +147,7 @@ public class ValidateMethods {
 									Integer finishTimeTemp = Integer.parseInt(oneSectionClassroom.getFinishTime().split(":")[0]);
 									if( ( (startTimeTemp>=startTime)&&(startTimeTemp<finishTime) ) ||
 											( (finishTimeTemp>startTime)&&(finishTimeTemp<=finishTime) ) ){
-										throw new Exception("Gruba ders eklemeye çalıştığınız ders "+oneSectionDay.get("startDate")+"-"+oneSectionDay.get("finishDate")+" aralıklarında"
+										throw new Exception("Gruba ders eklemeye çalıştığınız ders "+oneSectionDay.get("startTime")+"-"+oneSectionDay.get("finishTime")+" aralıklarında"
 												+ " eklenememektedir. Nedeni ise eklemeye çalıştığınız öğretmenin "+oneSectionClassroom.getSection().getCourse().getCourseCode()
 												+ " "+oneSectionClassroom.getSection().getSectionCode()+" dersinde "+oneSectionClassroom.getDay()+" günü "+oneSectionClassroom.getStartTime()+"-"
 												+ oneSectionClassroom.getFinishTime()+" aralıklarında başka bir dersi bulunmasıdır.");
