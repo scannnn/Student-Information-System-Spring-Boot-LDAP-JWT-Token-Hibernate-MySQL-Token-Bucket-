@@ -38,7 +38,6 @@ public class StudentSection {
 		this.section = section;
 	}
 	
-	@JsonIgnore
 	public int getId() {
 		return id;
 	}
