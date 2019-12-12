@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "student_section")
 public class StudentSection {
@@ -35,7 +37,8 @@ public class StudentSection {
 		this.student = student;
 		this.section = section;
 	}
-
+	
+	@JsonIgnore
 	public int getId() {
 		return id;
 	}
@@ -43,9 +46,10 @@ public class StudentSection {
 	public void setId(int id) {
 		this.id = id;
 	}
-
+	
+	@JsonIgnore
 	public Student getStudent() {
-		return null;
+		return student;
 	}
 
 	public void setStudent(Student student) {
