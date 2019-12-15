@@ -1,6 +1,7 @@
 app:
   jwtExpirationInMs: '3600000'
   jwtSecret: usis
+  securityValue: false
 logging:
   level:
     org:
@@ -16,17 +17,17 @@ spring:
       port: 12345
       validation:
         enabled: false
-  cache:
-    jcache:
-      config: classpath:ehcache.xml
+
 bucket4j:
   enabled: true
   filters:
   - cache-name: buckets
+    filter-method: servlet
     url: .*
     rate-limits:
-    - bandwidths:
-      - capacity: 5
-        time: 10
-        unit: seconds        
-        
+      execute-condition: true
+      expression: "getRemoteAddr()"
+      bandwidths:
+      - capacity: 10
+        time: 1
+        unit: minutes

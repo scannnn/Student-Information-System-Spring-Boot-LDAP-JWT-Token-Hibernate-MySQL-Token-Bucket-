@@ -138,21 +138,17 @@ public class SectionRestController {
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<?> updateAllFields(@PathVariable String id, @RequestBody Map<String, Object> JSON){
-		Course course;
 		List<Map<String, String>> sectionDays;
 		Section section;
 		Set<SectionClassroom> sClasrooms = new HashSet<>();
 		try {
-				if(validateMethods.validateSectionUpdate(id, JSON)) {
+				section = sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode"));
+				if(validateMethods.validateSectionUpdate(id, JSON, section)) {
+					
 					sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
-					course = courseService.get((String)JSON.get("courseCode"));
-					
-					sectionService.delete(Integer.parseInt(id));
-					
-					sectionService.create((String)JSON.get("sectionCode"), course, 
-							instructorService.get((String)JSON.get("instructorCode")), (String)JSON.get("year"), 
-							(String)JSON.get("term"), (int)JSON.get("quota"));
-					
+					section.setQuota((int)JSON.get("quota"));
+					sectionService.update(section, Integer.parseInt(id));
+					sectionClassroomService.deleteAllWithGivenSection(section);
 					for(Map<String, String> oneSectionDay : sectionDays) {
 						sectionClassroomService.create(sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode")), classroomService.get(oneSectionDay.get("classroomCode")), 
 								oneSectionDay.get("type"), oneSectionDay.get("startTime"), oneSectionDay.get("finishTime"), 
@@ -161,13 +157,10 @@ public class SectionRestController {
 								oneSectionDay.get("type"), oneSectionDay.get("startTime"), oneSectionDay.get("finishTime"), 
 								oneSectionDay.get("day")));
 					}
+					section.setSectionClassrooms(sClasrooms);
 				}
-				section = sectionService.get(courseService.get((String)JSON.get("courseCode")), (String)JSON.get("sectionCode"));
-				section.setSectionClassrooms(sClasrooms);
-		
 		}
 		catch (Exception e) {
-			e.printStackTrace();
 			return ResponseEntity
 					.status(HttpStatus.BAD_REQUEST)
 					.body(e.getMessage());

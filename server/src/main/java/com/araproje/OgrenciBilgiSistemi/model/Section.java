@@ -183,6 +183,10 @@ public class Section {
 		studentCount--;
 	}
 	
+	public void increateQuota(int value) {
+		quota += value;
+	}
+	
 	public boolean isSectionFull() {
 		if(quota == studentCount) return true;
 		else return false;

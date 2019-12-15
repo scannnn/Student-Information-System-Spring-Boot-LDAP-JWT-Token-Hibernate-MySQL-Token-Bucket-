@@ -100,15 +100,16 @@ public class ValidateMethods {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public boolean validateSectionUpdate(String id, Map<String, Object> JSON) throws Exception {
+	public boolean validateSectionUpdate(String id, Map<String, Object> JSON, Section oldSection) throws Exception {
 		try {
-			
+			if((int)JSON.get("quota") < oldSection.getQuota()) {
+				throw new Exception("Kontenjan sayısı azaltılamaz.");
+			}
 			List<Map<String, String>> sectionDays = (List<Map<String, String>>)JSON.get("sectionClassrooms");
-			
 			if(sectionDays != null) {
 				if(sectionService.isExist(Integer.parseInt(id))) {
 					List<SectionClassroom> sectionClassrooms = sectionClassroomService.getAll();
-					List<SectionClassroom> sectionClassroomsTemp = sectionClassrooms;
+					List<SectionClassroom> sectionClassroomsTemp = sectionClassroomService.getAll();
 					for(SectionClassroom SC : sectionClassroomsTemp) {
 						if(SC.getSection().getId() == Integer.parseInt(id)) {
 							sectionClassrooms.remove(SC);
@@ -164,6 +165,7 @@ public class ValidateMethods {
 			else throw new Exception("Grubun açılabilmesi için en azından 1 güne ders eklemeniz gerekmektedir.");
 		}
 		catch (Exception e) {
+			System.out.println(e.getMessage());
 			throw new Exception(e.getMessage());
 		}
 		return true;

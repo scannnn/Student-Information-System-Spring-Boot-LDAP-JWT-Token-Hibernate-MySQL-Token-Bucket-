@@ -36,11 +36,6 @@ public class StudentSectionRestController {
 	@Autowired
 	ValidateMethods validateMethods;
 	
-	
-	// Aşağıda aldığım sectionId eklemek istediğin section un database id si olacak. Kodu falan değil
-	// Zaten benden yıl ve döneme göre dersleri göstermek için çektiğinde sana id dahil section un herşeyini
-	// attığımdan sen bana id sini atsan yeter. Ben hangi öğrenciye eklenecek falan hepsini ldap tan 
-	// çıkartıyorum burada.
 	@PostMapping("/{sectionId}")
 	public ResponseEntity<?> add(@PathVariable String sectionId, HttpServletRequest request){
 		Student student;

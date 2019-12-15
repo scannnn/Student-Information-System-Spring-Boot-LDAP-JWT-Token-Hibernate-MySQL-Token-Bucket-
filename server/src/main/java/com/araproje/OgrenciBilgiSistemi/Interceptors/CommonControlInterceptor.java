@@ -19,6 +19,9 @@ public class CommonControlInterceptor implements HandlerInterceptor{
 		
 		String header = request.getHeader("Authorization");
 		
+		String ipAddress = request.getRemoteAddr();
+		System.out.println("AYIP = "+ipAddress);
+		
 		if(header == null || !header.startsWith("Bearer ")) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, MessageConstants.EMPTY_TOKEN);
 			return false;
