@@ -49,6 +49,10 @@ public class SectionService {
 		return (List<Section>) sectionRepository.findAllSectionsByYearAndTerm(year, term);
 	}
 	
+	public List<Section> getByYearAndTermAndInstructor(String year, String term, Instructor instructor){
+		return (List<Section>) sectionRepository.findAllSectionsByYearAndTermAndInstructor(year, term, instructor);
+	}
+	
 	public boolean isExist(Integer id) {
 		return sectionRepository.existsById(id);
 	}

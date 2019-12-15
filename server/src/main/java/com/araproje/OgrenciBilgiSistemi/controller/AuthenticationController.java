@@ -22,6 +22,7 @@ import com.araproje.OgrenciBilgiSistemi.model.Student;
 import com.araproje.OgrenciBilgiSistemi.payload.ApiResponse;
 import com.araproje.OgrenciBilgiSistemi.payload.LoginRequest;
 import com.araproje.OgrenciBilgiSistemi.security.JwtTokenProvider;
+import com.araproje.OgrenciBilgiSistemi.service.InstructorService;
 import com.araproje.OgrenciBilgiSistemi.service.StudentService;
 import com.araproje.OgrenciBilgiSistemi.util.MessageConstants;
 
@@ -40,6 +41,8 @@ public class AuthenticationController {
 	private JwtTokenProvider jwtTokenProvider;
 	@Autowired
 	StudentService studentService;
+	@Autowired
+	InstructorService instructorService;
 	
 	@PostMapping("/generatetoken")
 	public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest){
@@ -67,7 +70,7 @@ public class AuthenticationController {
 			jo.put("role", jwtTokenProvider.getUserFromJWT(token).getRole());
 		}
 		else if(jwtTokenProvider.getUserFromJWT(token).getRole().equalsIgnoreCase("Instructor")) {
-			Instructor instructor = null;
+			Instructor instructor = instructorService.get(loginRequest.getUsername());
 			jo.put("user", instructor);
 			jo.put("role",jwtTokenProvider.getUserFromJWT(token).getRole());
 		}

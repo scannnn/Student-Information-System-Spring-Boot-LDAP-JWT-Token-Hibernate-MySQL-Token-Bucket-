@@ -40,7 +40,7 @@ public class Instructor {
 	@Column(name = "instructorCode", nullable = false, updatable = true)
     private String instructorCode;
 	
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "department_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
 	private Department department;
