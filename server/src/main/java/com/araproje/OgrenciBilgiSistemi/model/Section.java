@@ -151,8 +151,9 @@ public class Section {
 		this.sectionClassrooms = sectionClassrooms;
 	}
 
+	@JsonIgnore
 	public Set<StudentSection> getStudentSections() {
-		return null;
+		return studentSections;
 	}
 
 	public void setStudentSections(Set<StudentSection> studentSections) {

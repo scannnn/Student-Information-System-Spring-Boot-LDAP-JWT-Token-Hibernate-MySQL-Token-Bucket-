@@ -13,6 +13,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+
 @Entity
 @Table(name = "grades")
 public class Grade {
@@ -66,5 +67,10 @@ public class Grade {
 	public void setGradeType(GradeType gradeType) {
 		this.gradeType = gradeType;
 	}
-
+	public long getGrade() {
+		return grade;
+	}
+	public void setGrade(long grade) {
+		this.grade = grade;
+	}
 }
