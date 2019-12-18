@@ -81,12 +81,12 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 			   		 else {
 			   			long diffInMillies = currentDate.getTime() - temp.getLastRequest().getTime();
 			   			temp.setLastRequest(new Date(System.currentTimeMillis()));
-			   			if(diffInMillies < 200) {
+			   			/*if(diffInMillies < 200) {
 			   				temp.increaseWarningCount();
 			   				userList.put(u.getUserId(), temp);
 			   				response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sisteme çok sık istek atmaktasınız. ");
 			   				return false;
-			   			}
+			   			}*/
 			   		 }
 			   	 }
 			   	 else {
