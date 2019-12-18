@@ -59,15 +59,16 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 			   			temp.setLastRequest(new Date(System.currentTimeMillis()));
 			   			if(diffInMillies < 200) {
 			   				temp.increaseWarningCount();
-			   				response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sisteme çok sık istek atmaktasınız. "
-				   					+ temp.getBannedUntil().toString()+ " tarihine kadar sistemden uzaklaştırıldınız. Eğer bu kadar sık"
-				   							+ " istek atmaya devam ederseniz sistem adminine bildirileceksiniz.");
 			   				if(temp.getBanCount() <3) {
 			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek göndermektedir.");
+			   					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sisteme çok sık istek atmaktasınız. "
+					   					+ temp.getBannedUntil().toString()+ " tarihine kadar sistemden uzaklaştırıldınız. Eğer bu kadar sık"
+					   							+ " istek atmaya devam ederseniz sistem adminine bildirileceksiniz.");
 			   				}
 			   				else {
 			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek gönderdiği için süresiz olarak"
 			   							+ " sunucudan uzaklaştırılmıştır.");
+			   					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Süresiz olarak sunucudan uzaklaştırıldınız. Lütfen sistem admini ile iletişime geçiniz.");
 			   				}
 			   				return false;
 			   			}
