@@ -37,6 +37,12 @@ public class Instructor {
 	@Column(name = "phoneNumber")
     private String phoneNumber;
 	
+	@Column(name = "district")
+    private String district;
+	
+	@Column(name = "province")
+    private String province;
+	
 	@Column(name = "instructorCode", nullable = false, updatable = true)
     private String instructorCode;
 	
@@ -48,15 +54,33 @@ public class Instructor {
 	public Instructor() {}
 
 	public Instructor(String firstName, String lastName, String mail, String address, String phoneNumber,
-			String instructorCode, Department department) {
+			String district, String province, String instructorCode, Department department) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mail = mail;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.district = district;
+		this.province = province;
 		this.instructorCode = instructorCode;
 		this.department = department;
+	}
+
+	public String getDistrict() {
+		return district;
+	}
+
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+
+	public String getProvince() {
+		return province;
+	}
+
+	public void setProvince(String province) {
+		this.province = province;
 	}
 
 	public int getId() {
@@ -102,23 +126,18 @@ public class Instructor {
 	public String getMail() {
 		return mail;
 	}
-
 	public void setMail(String mail) {
 		this.mail = mail;
 	}
-
 	public String getAddress() {
 		return address;
 	}
-
 	public void setAddress(String address) {
 		this.address = address;
 	}
-
 	public String getPhoneNumber() {
 		return phoneNumber;
 	}
-
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}

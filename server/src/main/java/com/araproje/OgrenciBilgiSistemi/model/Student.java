@@ -41,6 +41,12 @@ public class Student {
 	@Column(name = "phoneNumber")
     private String phoneNumber;
 	
+	@Column(name = "district")
+    private String district;
+	
+	@Column(name = "province")
+    private String province;
+	
 	@Column(name = "studentCode", nullable = false, updatable = true)
     private String studentCode;
 	
@@ -56,13 +62,15 @@ public class Student {
 
 
 	public Student(String firstName, String lastName, String mail, String address, String phoneNumber,
-			String studentCode, Department department) {
+			String district, String province, String studentCode, Department department) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.mail = mail;
 		this.address = address;
 		this.phoneNumber = phoneNumber;
+		this.district = district;
+		this.province = province;
 		this.studentCode = studentCode;
 		this.department = department;
 	}
@@ -129,4 +137,17 @@ public class Student {
 	public void setPhoneNumber(String phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	public String getDistrict() {
+		return district;
+	}
+	public void setDistrict(String district) {
+		this.district = district;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	
 }

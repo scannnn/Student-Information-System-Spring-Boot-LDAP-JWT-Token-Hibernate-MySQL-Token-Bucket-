@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 
+import com.araproje.OgrenciBilgiSistemi.model.User;
 import com.araproje.OgrenciBilgiSistemi.security.JwtTokenProvider;
 import com.araproje.OgrenciBilgiSistemi.util.MessageConstants;
 
@@ -19,21 +20,21 @@ public class CommonControlInterceptor implements HandlerInterceptor{
 		
 		String header = request.getHeader("Authorization");
 		
-		String ipAddress = request.getRemoteAddr();
-		System.out.println("AYIP = "+ipAddress);
-		
 		if(header == null || !header.startsWith("Bearer ")) {
 			response.sendError(HttpServletResponse.SC_BAD_REQUEST, MessageConstants.EMPTY_TOKEN);
 			return false;
 		}
 		else {
 			String jwt = header.substring(7);
+			User u = jwtTokenProvider.getUserFromJWT(jwt);
 		   	 try {
 		   		 jwtTokenProvider.validateToken(jwt);
 		   	 }catch(Exception ex) {
 		   		 response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
 		   		return false;
 		   	 }
+		   	request.setAttribute("uid", u.getUserId());
+		   	request.setAttribute("role", u.getRole());
 		   	 return true;
 		     
 		}

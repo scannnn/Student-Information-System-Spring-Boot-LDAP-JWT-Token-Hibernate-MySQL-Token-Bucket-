@@ -16,8 +16,9 @@ public class StudentService {
 	StudentRepository studentRepository;
 	
 	public void create(String firstName, String lastName, String mail, String address, String phoneNumber, 
-			String studentCode, Department department) {
-		studentRepository.save(new Student(firstName, lastName, mail, address, phoneNumber, studentCode, department));
+			String district, String province, String studentCode, Department department) {
+		studentRepository.save(new Student(firstName, lastName, mail, address, phoneNumber, district,
+				province, studentCode, department));
 	}
 	
 	public void update(Student student) {
