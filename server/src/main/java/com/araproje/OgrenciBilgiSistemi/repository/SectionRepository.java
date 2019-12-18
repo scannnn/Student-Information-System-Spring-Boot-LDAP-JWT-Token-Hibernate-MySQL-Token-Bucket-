@@ -12,5 +12,6 @@ public interface SectionRepository extends CrudRepository<Section, Integer>{
 	public Section findBySectionCode(String sectionCode);
 	public Section findByCourseAndSectionCode(Course course, String sectionCode);
 	public List<Section> findAllSectionsByYearAndTerm(String year, String term);
+	public List<Section> findAllSectionsByCourse(Course course);
 	public List<Section> findAllSectionsByYearAndTermAndInstructor(String year, String term, Instructor instructor);
 }

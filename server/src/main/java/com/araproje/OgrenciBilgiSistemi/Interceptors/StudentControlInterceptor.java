@@ -63,10 +63,10 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 				   					+ temp.getBannedUntil().toString()+ " tarihine kadar sistemden uzaklaştırıldınız. Eğer bu kadar sık"
 				   							+ " istek atmaya devam ederseniz sistem adminine bildirileceksiniz.");
 			   				if(temp.getBanCount() <3) {
-			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ "çok sık istek göndermektedir.");
+			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek göndermektedir.");
 			   				}
 			   				else {
-			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ "çok sık istek gönderdiği için süresiz olarak"
+			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek gönderdiği için süresiz olarak"
 			   							+ " sunucudan uzaklaştırılmıştır.");
 			   				}
 			   				return false;

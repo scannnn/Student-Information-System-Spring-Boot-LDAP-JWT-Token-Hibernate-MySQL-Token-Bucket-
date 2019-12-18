@@ -15,6 +15,10 @@ public class SectionService {
 
 	@Autowired
 	SectionRepository sectionRepository;
+	@Autowired
+	SectionClassroomService sectionClassroomService;
+	@Autowired
+	StudentSectionService studentSectionService;
 	
 	public void create(String sectionCode, Course course, Instructor instructor, String year, String term, Integer quota) {
 		sectionRepository.save(new Section(sectionCode, course, instructor, year, term, quota));
@@ -31,6 +35,15 @@ public class SectionService {
 	
 	public void delete(Integer id) {
 		sectionRepository.deleteById(id);
+	}
+	
+	public void deleteSectionsWithGivenCourse(Course course) {
+		List<Section> sections = sectionRepository.findAllSectionsByCourse(course);
+		for(Section s : sections) {
+			sectionClassroomService.deleteAllWithGivenSection(sectionRepository.findById(s.getId()).get());
+			studentSectionService.deleteAllWithGivenSection(sectionRepository.findById(s.getId()).get());
+			sectionRepository.deleteById(s.getId());
+		}
 	}
 	
 	public Section get(Course course, String sectionCode) {

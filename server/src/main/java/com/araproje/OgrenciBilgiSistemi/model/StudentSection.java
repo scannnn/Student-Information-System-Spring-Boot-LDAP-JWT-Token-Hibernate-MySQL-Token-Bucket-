@@ -71,14 +71,13 @@ public class StudentSection {
 	public void setSection(Section section) {
 		this.section = section;
 	}
-	public List<Map<String, Object>> getGrades() {
-		List<Map<String, Object>> response = new ArrayList<>();
+	public Map<String, Map<String, Object>> getGrades() {
+		Map<String, Map<String, Object>> response = new HashMap<>();
 		for(Grade g : grades) {
 			Map<String, Object> temp = new HashMap<String, Object>();
 			temp.put("id", g.getId());
-			temp.put("grade type", g.getGradeType().getName());
 			temp.put("grade", g.getGrade());
-			response.add(temp);
+			response.put(g.getGradeType().getName(), temp);
 		}
 		return response;
 	}

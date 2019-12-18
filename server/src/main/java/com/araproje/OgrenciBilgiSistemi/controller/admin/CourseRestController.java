@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.araproje.OgrenciBilgiSistemi.model.Course;
 import com.araproje.OgrenciBilgiSistemi.service.CourseService;
 import com.araproje.OgrenciBilgiSistemi.service.DepartmentService;
+import com.araproje.OgrenciBilgiSistemi.service.SectionService;
 
 @SuppressWarnings("unchecked")
 @RestController
@@ -29,6 +30,8 @@ public class CourseRestController {
 	CourseService courseService;
 	@Autowired
 	DepartmentService departmentService;
+	@Autowired
+	SectionService sectionService;
 
 	@PostMapping
 	public ResponseEntity<?> add(@RequestBody Map<String, Object> JSON){
@@ -68,6 +71,7 @@ public class CourseRestController {
 			c = courseService.get(Integer.parseInt(id));
 			trick = c.getPrerequisites();		// lazy loader hatasından kurtulmak için tricky way
 			trick = c.getWhosprerequisites();
+			sectionService.deleteSectionsWithGivenCourse(c);
 			courseService.delete(Integer.parseInt(id));
 		}
 		catch(Exception e) {
