@@ -57,7 +57,7 @@ public class IpBlock {
 	}
 	public void increaseWarningCount() {
 		warningCount++;
-		if(warningCount == 3) {
+		if(warningCount == 6) {
 			warningCount = 0;
 			banCount++;
 			if(banCount == 3) {
