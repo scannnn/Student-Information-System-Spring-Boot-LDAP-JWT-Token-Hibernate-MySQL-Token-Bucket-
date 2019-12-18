@@ -34,10 +34,10 @@ public class Grade {
 	private GradeType gradeType;
 
 	@Column (name = "grade")
-	private long grade;
+	private int grade;
 	
 	public Grade() {}
-	public Grade(StudentSection studentSection, GradeType gradeType, long grade) {
+	public Grade(StudentSection studentSection, GradeType gradeType, int grade) {
 		super();
 		this.studentSection = studentSection;
 		this.gradeType = gradeType;
@@ -67,10 +67,10 @@ public class Grade {
 	public void setGradeType(GradeType gradeType) {
 		this.gradeType = gradeType;
 	}
-	public long getGrade() {
+	public int getGrade() {
 		return grade;
 	}
-	public void setGrade(long grade) {
+	public void setGrade(int grade) {
 		this.grade = grade;
 	}
 }

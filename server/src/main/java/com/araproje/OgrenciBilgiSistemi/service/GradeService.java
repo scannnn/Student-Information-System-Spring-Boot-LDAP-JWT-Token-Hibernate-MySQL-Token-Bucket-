@@ -16,7 +16,7 @@ public class GradeService {
 	@Autowired
 	GradeRepository gradeRepository;
 	
-	public void create(StudentSection studentSection, GradeType gradeType, long grade) {
+	public void create(StudentSection studentSection, GradeType gradeType, int grade) {
 		gradeRepository.save(new Grade(studentSection, gradeType, grade));
 	}
 	
@@ -34,5 +34,13 @@ public class GradeService {
 	
 	public List<Grade> getAll() {
 		return (List<Grade>)gradeRepository.findAll();
+	}
+	
+	public boolean isExist(StudentSection studentSection, GradeType gradeType) {
+		System.out.println("Hello inside");
+		if(gradeRepository.findByStudentSectionAndGradeType(studentSection, gradeType) == null) {
+			return false;
+		}
+		else return true;
 	}
 }
