@@ -61,7 +61,7 @@ public class IpBlock {
 			warningCount = 0;
 			banCount++;
 			if(banCount == 3) {
-				bannedUntil =  new Date(Long.MAX_VALUE);
+				bannedUntil =  new Date(1800000);
 			}
 			else {
 				bannedUntil =  new Date(System.currentTimeMillis() + 20000);

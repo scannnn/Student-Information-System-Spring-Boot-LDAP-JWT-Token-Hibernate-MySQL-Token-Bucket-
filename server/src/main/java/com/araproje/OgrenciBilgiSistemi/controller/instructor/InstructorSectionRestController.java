@@ -41,4 +41,20 @@ public class InstructorSectionRestController {
 		return ResponseEntity
 				.status(HttpStatus.OK).body(sections);
 	}
+	
+	@GetMapping("/common/{year}/{term}")
+	public ResponseEntity<?> getByYearAndTerm(@PathVariable String year, @PathVariable String term){
+		List<Section> sections;
+		try {
+			sections = sectionService.getByYearAndTerm(year, term);
+		}
+		catch (Exception e) {
+			return ResponseEntity
+					.status(HttpStatus.BAD_REQUEST)
+					.body(e.getMessage());
+		}
+		return ResponseEntity
+				.status(HttpStatus.OK)
+				.body(sections);
+	}
 }

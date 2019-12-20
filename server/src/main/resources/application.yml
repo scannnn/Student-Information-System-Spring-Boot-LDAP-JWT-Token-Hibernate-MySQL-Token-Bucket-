@@ -1,7 +1,7 @@
 app:
   jwtExpirationInMs: '3600000'
   jwtSecret: usis
-  securityValue: true
+  securityValue: false
 server:
   port: '8082'
 spring:
