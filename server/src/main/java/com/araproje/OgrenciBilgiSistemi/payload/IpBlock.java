@@ -5,6 +5,7 @@ import java.util.Date;
 public class IpBlock {
 	int warningCount;
 	int banCount;
+	int count;
 	boolean isBanned;
 	Date lastRequest;
 	Date bannedUntil;
@@ -13,6 +14,7 @@ public class IpBlock {
 		super();
 		warningCount = 0;
 		banCount = 0;
+		count = 600;
 		isBanned = false;
 		bannedUntil = new Date(Long.MIN_VALUE);
 		lastRequest = new Date(Long.MIN_VALUE);
@@ -67,5 +69,23 @@ public class IpBlock {
 				bannedUntil =  new Date(System.currentTimeMillis() + 20000);
 			}
 		}
+	}
+
+	public int getCount() {
+		return count;
+	}
+
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
+	public void increaseCount(int c) {
+		count += c;
+		if(count > 600) count = 600;
+	}
+	
+	public void decreaseCount() {
+		count--;
+		if(count < 0) count = 0;
 	}
 }

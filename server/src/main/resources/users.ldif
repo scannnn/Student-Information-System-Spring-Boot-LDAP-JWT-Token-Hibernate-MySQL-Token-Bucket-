@@ -38,3 +38,13 @@ cn: M Utku
 sn: Kalay
 role: Instructor
 userPassword: {SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=
+
+dn: uid=15011072,ou=people,dc=araproje,dc=com
+objectclass: top
+objectclass: user
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Kubilay
+sn: Guran
+role: Student
+userPassword: {SHA}5en6G6MezRroT3XKqkdPOmY/BfQ=

@@ -2,6 +2,8 @@ package com.araproje.OgrenciBilgiSistemi.controller.student;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.araproje.OgrenciBilgiSistemi.model.Section;
 import com.araproje.OgrenciBilgiSistemi.model.Student;
 import com.araproje.OgrenciBilgiSistemi.model.StudentSection;
+import com.araproje.OgrenciBilgiSistemi.payload.SectionLastPick;
 import com.araproje.OgrenciBilgiSistemi.service.SectionService;
 import com.araproje.OgrenciBilgiSistemi.service.StudentSectionService;
 import com.araproje.OgrenciBilgiSistemi.service.StudentService;
@@ -36,6 +39,8 @@ public class StudentSectionRestController {
 	@Autowired
 	ValidateMethods validateMethods;
 	
+	Map<String, SectionLastPick> studentList = new ConcurrentHashMap<>();
+	
 	@PostMapping("/{sectionId}")
 	public ResponseEntity<?> add(@PathVariable String sectionId, HttpServletRequest request){
 		Student student;
@@ -44,9 +49,25 @@ public class StudentSectionRestController {
 			student = studentService.get((String)request.getAttribute("uid"));
 			section = sectionService.get(Integer.parseInt(sectionId));
 			if(validateMethods.validateStudentSection(student, sectionId)) {
-				section.increaseStudentCount();
-				sectionService.update(section, Integer.parseInt(sectionId));
-				studentSectionService.create(student, section);
+				if(studentList.containsKey(student.getStudentCode()+""+section.getCourse().getCourseCode())) {
+					SectionLastPick temp = studentList.get(student.getStudentCode()+""+section.getCourse().getCourseCode());
+					if(temp.chechForRePick()) {
+						studentList.remove(student.getStudentCode()+""+section.getCourse().getCourseCode());
+					}
+					else {
+						throw new Exception("Eklemeye çalıştığınız dersi en son "
+								+ studentList.get(student.getStudentCode()+""+section.getCourse().getCourseCode()).getLastPick()+ " eklediniz. Yeniden aynı derse"
+								+ " ekleme yapabilmek için üzerinden 5 dakika geçmesi gerekmektedir. ");
+					}
+				}
+				else {
+					section.increaseStudentCount();
+					sectionService.update(section, Integer.parseInt(sectionId));
+					studentSectionService.create(student, section);
+					SectionLastPick temp = new SectionLastPick(student.getStudentCode(), section.getCourse().getCourseCode());
+					studentList.put(student.getStudentCode()+""+section.getCourse().getCourseCode(), temp);
+				}
+				
 			}
 		}
 		catch(Exception e) {

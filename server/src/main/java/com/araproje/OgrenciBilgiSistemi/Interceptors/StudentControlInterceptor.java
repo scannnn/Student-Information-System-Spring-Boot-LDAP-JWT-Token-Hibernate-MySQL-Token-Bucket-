@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import com.araproje.OgrenciBilgiSistemi.model.User;
@@ -26,6 +27,15 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 	Logger LOGGER=LoggerFactory.getLogger(StudentControlInterceptor.class);
 	
 	Map<String, IpBlock> userList = new ConcurrentHashMap<>();
+	
+	@Scheduled(fixedRate = 60000)
+	public void scheduleTaskWithFixedRate() {
+	    for(IpBlock i : userList.values()) {
+	    	i.increaseCount(10);
+	    }
+		System.out.println("Token sayıları artırıldı.");
+	}
+	
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
@@ -54,19 +64,28 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 		   	 if(securityValue){
 		   		if(userList.containsKey(u.getUserId())) {
 			   		 IpBlock temp = userList.get(u.getUserId());
+			   		 // TOKEN DEĞERİNİ ARTTIRMA
+			   		 if(temp.getCount() <= 0) {
+			   			LOGGER.warn(u.getUserId()+" numaralı öğrenci çok fazla istek atmaktadır. Saatlik istek sınırını aşmıştır. "
+			   					+ " IP = "+ipAddress);
+	   					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sisteme çok fazla istek atmaktasınız."
+	   							+ " 1 dakika sonra tekrar deneyiniz.");
+			   		 }
+			   		 temp.decreaseCount();
 			   		 if(temp.isBanned()) {
 			   			long diffInMillies = currentDate.getTime() - temp.getLastRequest().getTime();
 			   			temp.setLastRequest(new Date(System.currentTimeMillis()));
 			   			if(diffInMillies < 200) {
 			   				temp.increaseWarningCount();
 			   				if(temp.getBanCount() <3) {
-			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek göndermektedir.");
+			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek göndermektedir."
+			   							+ " IP = "+ipAddress);
 			   					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sisteme çok sık istek atmaktasınız. "
 					   					+ temp.getBannedUntil().toString()+ " tarihine kadar sistemden uzaklaştırıldınız.");
 			   				}
 			   				else {
 			   					LOGGER.warn(u.getUserId()+" numaralı öğrenci"+ " çok sık istek gönderdiği için 30 dk lığına"
-			   							+ " sunucudan uzaklaştırılmıştır.");
+			   							+ " sunucudan uzaklaştırılmıştır."+" IP = "+ipAddress);
 			   					response.sendError(HttpServletResponse.SC_FORBIDDEN, "Sisteme çok sık istek atmaktasınız. "
 					   					+ temp.getBannedUntil().toString()+ " tarihine kadar sistemden uzaklaştırıldınız.");
 			   				}
@@ -92,6 +111,7 @@ public class StudentControlInterceptor implements HandlerInterceptor{
 			   	 else {
 			   		 IpBlock temp = new IpBlock();
 			   		 temp.setLastRequest(new Date(System.currentTimeMillis()));
+			   		 temp.decreaseCount();
 			   		 userList.put(u.getUserId(), temp);
 			   	 }
 		   	 }
