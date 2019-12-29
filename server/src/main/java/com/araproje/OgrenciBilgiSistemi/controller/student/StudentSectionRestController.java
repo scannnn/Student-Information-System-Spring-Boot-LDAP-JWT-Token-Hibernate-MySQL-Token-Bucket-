@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.araproje.OgrenciBilgiSistemi.model.Section;
@@ -135,10 +136,18 @@ public class StudentSectionRestController {
 	}
 	
 	@GetMapping("/common/{year}/{term}")
-	public ResponseEntity<?> getByYearAndTerm(@PathVariable String year, @PathVariable String term){
+	public ResponseEntity<?> getByYearAndTerm(@PathVariable String year, @PathVariable String term, 
+			@RequestParam(name = "query") String query){
 		List<Section> sections;
+		List<Section> sectionsSend = new ArrayList<>();
 		try {
 			sections = sectionService.getByYearAndTerm(year, term);
+			for(Section s : sections) {
+				if(s.getCourse().getCourseCode().contains(query) ||
+						s.getCourse().getTitle().contains(query)) {
+					sectionsSend.add(s);
+				}
+			}
 		}
 		catch (Exception e) {
 			return ResponseEntity
@@ -147,7 +156,7 @@ public class StudentSectionRestController {
 		}
 		return ResponseEntity
 				.status(HttpStatus.OK)
-				.body(sections);
+				.body(sectionsSend);
 	}
 	
 	@GetMapping()
